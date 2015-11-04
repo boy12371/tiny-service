@@ -1,9 +1,8 @@
 package cn.shiroblue;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.Cookie;
+import org.apache.log4j.Logger;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -15,7 +14,7 @@ import java.io.IOException;
  * on 15/10/29
  */
 public class Response {
-    private static final Logger LOG = LoggerFactory.getLogger(Response.class);
+    private static final Logger LOG = Logger.getLogger(Response.class);
 
     private HttpServletResponse response;
     private String body;
@@ -29,34 +28,34 @@ public class Response {
     }
 
     /**
-     * Sets the status code for the
+     * 设置http状态码
      *
-     * @param statusCode the status code
+     * @param statusCode 状态码
      */
     public void status(int statusCode) {
         response.setStatus(statusCode);
     }
 
     /**
-     * Sets the content type for the response
+     * 设置content-typpe
      *
-     * @param contentType the content type
+     * @param contentType content-type
      */
     public void type(String contentType) {
         response.setContentType(contentType);
     }
 
     /**
-     * Sets the body
+     * 设置响应本体
      *
-     * @param body the body
+     * @param body 本体
      */
     public void body(String body) {
         this.body = body;
     }
 
     /**
-     * returns the body
+     * 得到响应内容
      *
      * @return the body
      */
@@ -78,7 +77,7 @@ public class Response {
      */
     public void redirect(String location) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Redirecting ({} {} to {}", "Found", HttpServletResponse.SC_FOUND, location);
+            LOG.debug("Redirecting (" + HttpServletResponse.SC_FOUND + " to {}" + location);
         }
         try {
             response.sendRedirect(location);
@@ -95,7 +94,7 @@ public class Response {
      */
     public void redirect(String location, int httpStatusCode) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Redirecting ({} to {}", httpStatusCode, location);
+            LOG.debug("Redirecting (" + httpStatusCode + " to " + location);
         }
         response.setStatus(httpStatusCode);
         response.setHeader("Location", location);
@@ -108,7 +107,7 @@ public class Response {
     }
 
     /**
-     * Adds/Sets a response header
+     * 设置header
      *
      * @param header the header
      * @param value  the value
@@ -117,95 +116,4 @@ public class Response {
         response.addHeader(header, value);
     }
 
-    /**
-     * 设置cookie
-     *
-     * @param name  name of the cookie
-     * @param value value of the cookie
-     */
-    public void cookie(String name, String value) {
-        cookie(name, value, -1, false);
-    }
-
-    /**
-     * 设置cookie
-     *
-     * @param name   name of the cookie
-     * @param value  value of the cookie
-     * @param maxAge max age of the cookie in seconds (negative for the not persistent cookie,
-     *               zero - deletes the cookie)
-     */
-    public void cookie(String name, String value, int maxAge) {
-        cookie(name, value, maxAge, false);
-    }
-
-    /**
-     * 设置cookie
-     *
-     * @param name    name of the cookie
-     * @param value   value of the cookie
-     * @param maxAge  max age of the cookie in seconds (negative for the not persistent cookie, zero - deletes the cookie)
-     * @param secured if true : cookie will be secured
-     */
-    public void cookie(String name, String value, int maxAge, boolean secured) {
-        cookie(name, value, maxAge, secured, false);
-    }
-
-
-    /**
-     * 设置cookie
-     *
-     * @param name     name of the cookie
-     * @param value    value of the cookie
-     * @param maxAge   max age of the cookie in seconds (negative for the not persistent cookie, zero - deletes the cookie)
-     * @param secured  if true : cookie will be secured
-     * @param httpOnly if true: cookie will be marked as http only
-     */
-    public void cookie(String name, String value, int maxAge, boolean secured, boolean httpOnly) {
-        cookie("", name, value, maxAge, secured, httpOnly);
-    }
-
-
-    /**
-     * 设置cookie
-     *
-     * @param path    path of the cookie
-     * @param name    name of the cookie
-     * @param value   value of the cookie
-     * @param maxAge  max age of the cookie in seconds (negative for the not persistent cookie, zero - deletes the cookie)
-     * @param secured if true : cookie will be secured
-     */
-    public void cookie(String path, String name, String value, int maxAge, boolean secured) {
-        cookie(path, name, value, maxAge, secured, false);
-    }
-
-    /**
-     * 设置cookie
-     *
-     * @param path     path of the cookie
-     * @param name     name of the cookie
-     * @param value    value of the cookie
-     * @param maxAge   max age of the cookie in seconds (negative for the not persistent cookie, zero - deletes the cookie)
-     * @param secured  if true : cookie will be secured
-     * @param httpOnly if true: cookie will be marked as http only
-     */
-    public void cookie(String path, String name, String value, int maxAge, boolean secured, boolean httpOnly) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setPath(path);
-        cookie.setMaxAge(maxAge);
-        cookie.setSecure(secured);
-        cookie.setHttpOnly(httpOnly);
-        response.addCookie(cookie);
-    }
-
-    /**
-     * Removes the cookie.
-     *
-     * @param name name of the cookie
-     */
-    public void removeCookie(String name) {
-        Cookie cookie = new Cookie(name, "");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-    }
 }

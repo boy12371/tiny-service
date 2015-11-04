@@ -1,7 +1,5 @@
 package cn.shiroblue.core;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Description:
@@ -11,7 +9,6 @@ import org.slf4j.LoggerFactory;
  * on 15/10/30
  */
 public class ExceptionMatcherFactory {
-    private static final Logger LOG = LoggerFactory.getLogger(ExceptionMatcherFactory.class);
 
     private static ExceptionMapper exceptionMapper = null;
 
@@ -20,7 +17,6 @@ public class ExceptionMatcherFactory {
 
     public static ExceptionMapper get() {
         if (exceptionMapper == null) {
-            LOG.debug("create ExceptionMatcher");
             exceptionMapper = new ExceptionMapper();
         }
         return exceptionMapper;

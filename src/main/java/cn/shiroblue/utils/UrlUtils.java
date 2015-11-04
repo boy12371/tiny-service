@@ -11,7 +11,6 @@ import java.util.List;
  * on 15/10/29
  */
 public class UrlUtils {
-    public static final String ALL_PATHS = "/*";
 
     /**
      * 路由 => list

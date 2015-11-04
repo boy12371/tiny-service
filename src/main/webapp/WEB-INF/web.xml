@@ -7,7 +7,7 @@
 
     <filter>
         <filter-name>CoreFilter</filter-name>
-        <filter-class>cn.shiroblue.core.CoreFilter</filter-class>
+        <filter-class>cn.shiroblue.core.TinyFilter</filter-class>
         <init-param>
             <param-name>applicationClass</param-name>
             <param-value>test.TestApp</param-value>

@@ -4,10 +4,9 @@ import cn.shiroblue.route.RouteMatch;
 import cn.shiroblue.utils.TinyUtils;
 import cn.shiroblue.utils.UrlUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
@@ -19,7 +18,7 @@ import java.util.*;
  */
 public class Request {
 
-    private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(Request.class);
+    private static final Logger LOG = Logger.getLogger(Request.class);
 
     private static final String USER_AGENT = "user-agent";
 
@@ -207,14 +206,15 @@ public class Request {
     }
 
     /**
-     * @return the length of request.body
+     * @return 请求本体length
      */
     public int contentLength() {
         return servletRequest.getContentLength();
     }
 
+
     /**
-     * Gets the query param
+     * 请求参数
      *
      * @param queryParam the query parameter
      * @return the value of the provided queryParam
@@ -225,7 +225,7 @@ public class Request {
     }
 
     /**
-     * Gets all the values of the query param
+     * 得到某一相同参数的所有值
      * Example: query parameter 'id' from the following request URI: /hello?id=foo&id=bar
      *
      * @param queryParam the query parameter
@@ -236,7 +236,7 @@ public class Request {
     }
 
     /**
-     * Gets the value for the provided header
+     * 取得header值
      *
      * @param header the header
      * @return the value of the provided header
@@ -332,56 +332,6 @@ public class Request {
         return session;
     }
 
-    /**
-     * Returns the current session associated with this request, or if there is
-     * no current session and <code>create</code> is true, returns  a new session.
-     *
-     * @param create <code>true</code> to create a new session for this request if necessary;
-     *               <code>false</code> to return null if there's no current session
-     * @return the session associated with this request or <code>null</code> if
-     * <code>create</code> is <code>false</code> and the request has no valid session
-     */
-    public Session session(boolean create) {
-        if (session == null) {
-            HttpSession httpSession = servletRequest.getSession(create);
-            if (httpSession != null) {
-                session = new Session(httpSession);
-            }
-        }
-        return session;
-    }
-
-    /**
-     * @return request cookies (or empty Map if cookies dosn't present)
-     */
-    public Map<String, String> cookies() {
-        Map<String, String> result = new HashMap<String, String>();
-        Cookie[] cookies = servletRequest.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                result.put(cookie.getName(), cookie.getValue());
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Gets cookie by name.
-     *
-     * @param name name of the cookie
-     * @return cookie value or null if the cookie was not found
-     */
-    public String cookie(String name) {
-        Cookie[] cookies = servletRequest.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(name)) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
-    }
 
     /**
      * @return the part of this request's URL from the protocol name up to the query string in the first line of the HTTP request.
@@ -389,6 +339,7 @@ public class Request {
     public String uri() {
         return servletRequest.getRequestURI();
     }
+
 
     /**
      * @return Returns the name and version of the protocol the request uses

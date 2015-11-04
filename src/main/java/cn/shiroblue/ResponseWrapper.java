@@ -93,28 +93,4 @@ public class ResponseWrapper extends Response {
         delegate.type(contentType);
     }
 
-    @Override
-    public void cookie(String name, String value) {
-        delegate.cookie(name, value);
-    }
-
-    @Override
-    public void cookie(String name, String value, int maxAge) {
-        delegate.cookie(name, value, maxAge);
-    }
-
-    @Override
-    public void cookie(String name, String value, int maxAge, boolean secured) {
-        delegate.cookie(name, value, maxAge, secured);
-    }
-
-    @Override
-    public void cookie(String path, String name, String value, int maxAge, boolean secured) {
-        delegate.cookie(path, name, value, maxAge, secured);
-    }
-
-    @Override
-    public void removeCookie(String name) {
-        delegate.removeCookie(name);
-    }
 }

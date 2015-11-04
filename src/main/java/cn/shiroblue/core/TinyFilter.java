@@ -4,11 +4,10 @@ import cn.shiroblue.*;
 import cn.shiroblue.route.HttpMethod;
 import cn.shiroblue.route.RouteMatch;
 import cn.shiroblue.route.RouteMatcher;
-import cn.shiroblue.utils.FilterUtils;
 import cn.shiroblue.utils.UrlUtils;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +23,9 @@ import java.util.List;
  * by WhiteBlue
  * on 15/10/25
  */
-public class CoreFilter implements Filter {
-    private static final Logger LOG = LoggerFactory.getLogger(CoreFilter.class);
+public class TinyFilter implements Filter {
+    private static final Logger LOG = Logger.getLogger(TinyFilter.class);
+
     // web.xml 配置参数
     private static final String APPLICATION_CLASS_PARAM = "applicationClass";
 
@@ -41,6 +41,10 @@ public class CoreFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+
+        //默认日志
+        BasicConfigurator.configure();
+
         this.tinyApplication = getApplication(filterConfig);
 
         //初始化路径映射
@@ -59,7 +63,7 @@ public class CoreFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        this.tinyApplication.destroy();
     }
 
 
@@ -78,14 +82,15 @@ public class CoreFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 
+        //支持REST方法
         String method = httpRequest.getHeader(HTTP_METHOD_OVERRIDE_HEADER);
         if (method == null) {
             method = httpRequest.getMethod();
         }
 
-        String httpMethodStr = method.toUpperCase();
-        String url = UrlUtils.pathFormat(httpRequest.getPathInfo());
-        HttpMethod httpMethod = HttpMethod.valueOf(httpMethodStr);
+        //method于url格式化
+        HttpMethod httpMethod = HttpMethod.valueOf(method.toUpperCase());
+        String url = UrlUtils.pathFormat(httpRequest.getRequestURI());
 
         Object bodyContent = null;
 
@@ -94,14 +99,17 @@ public class CoreFilter implements Filter {
         Response response = new Response(httpResponse);
         ResponseWrapper responseWrapper = new ResponseWrapper(response);
 
-        LOG.debug("httpMethod:" + httpMethodStr + ", uri: " + url);
+        LOG.debug("Request : [httpMethod:" + httpMethod + ", url: " + url + "] ");
 
         try {
             //首拦截器执行
             for (RouteMatch routeMatch : listRoute) {
-                if ((routeMatch.getTarget() instanceof TinyFilter) && (routeMatch.getHttpMethod() == HttpMethod.before)) {
+                if ((routeMatch.getRouteType() == RouteType.FILTER) && (routeMatch.getHttpMethod() == HttpMethod.before)) {
+
+                    LOG.debug("Action : [actionType:" + routeMatch.getRouteType().name() + ", url: " + routeMatch.getMatchPath() + "] ");
+
                     Request request = new Request(routeMatch, httpRequest);
-                    ((TinyFilter) routeMatch.getTarget()).handle(request, responseWrapper);
+                    routeMatch.getTarget().handle(request, responseWrapper);
                     listRoute.remove(routeMatch);
                 }
             }
@@ -110,22 +118,22 @@ public class CoreFilter implements Filter {
 
             //方法映射查找
             for (RouteMatch routeMatch : listRoute) {
-                if ((routeMatch.getTarget() instanceof Route) && (routeMatch.getHttpMethod() == httpMethod)) {
+                if (routeMatch.getRouteType() == RouteType.ACTION) {
                     match = routeMatch;
-                    listRoute.remove(routeMatch);
                 }
             }
 
             //执行
             if (match != null) {
-                Object result = null;
-                if (match.getTarget() instanceof Route) {
-                    Request request = new Request(match, httpRequest);
-                    Object element = ((Route) match.getTarget()).handle(request, responseWrapper);
 
-                    //映射的方法对视图文件进行渲染
-                    result = this.responseTransformer.render(element);
-                }
+                LOG.debug("Action : [actionType:" + match.getRouteType().name() + ", url: " + match.getMatchPath() + "] ");
+
+                Request request = new Request(match, httpRequest);
+                Object element = match.getTarget().handle(request, responseWrapper);
+
+                //映射的方法对视图文件进行渲染
+                Object result = this.responseTransformer.render(element);
+
                 if (result != null) {
                     bodyContent = result;
                 }
@@ -133,9 +141,12 @@ public class CoreFilter implements Filter {
 
             //尾拦截器执行
             for (RouteMatch routeMatch : listRoute) {
-                if ((routeMatch.getTarget() instanceof TinyFilter) && (routeMatch.getHttpMethod() == HttpMethod.after)) {
+                if ((routeMatch.getRouteType() == RouteType.FILTER) && (routeMatch.getHttpMethod() == HttpMethod.after)) {
+
+                    LOG.debug("Action : [actionType:" + routeMatch.getRouteType().name() + ", url: " + routeMatch.getMatchPath() + "] ");
+
                     Request request = new Request(routeMatch, httpRequest);
-                    ((TinyFilter) routeMatch.getTarget()).handle(request, responseWrapper);
+                    routeMatch.getTarget().handle(request, responseWrapper);
 
                     String bodyAfterFilter = response.body();
                     if (bodyAfterFilter != null) {
@@ -171,10 +182,10 @@ public class CoreFilter implements Filter {
         if (consumed) {
             //写入body content
             if (!httpResponse.isCommitted()) {
+                //默认content-type
                 if (httpResponse.getContentType() == null) {
                     httpResponse.setContentType("text/html; charset=utf-8");
                 }
-
                 OutputStream outputStream = httpResponse.getOutputStream();
 
                 IOUtils.write(bodyContent.toString(), outputStream);

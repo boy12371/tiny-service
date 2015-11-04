@@ -1,5 +1,8 @@
 package cn.shiroblue.route;
 
+import cn.shiroblue.Route;
+import cn.shiroblue.RouteType;
+
 /**
  * Description:
  * 匹配后的路径对象
@@ -8,16 +11,18 @@ package cn.shiroblue.route;
  * on 15/10/30
  */
 public class RouteMatch {
-    HttpMethod httpMethod;
-    String matchPath;
-    String path;
-    Object target;
+    private HttpMethod httpMethod;
+    private String matchPath;
+    private String path;
+    private RouteType routeType;
+    private Route target;
 
-    public RouteMatch(HttpMethod httpMethod, String matchPath, String path, Object target) {
+    public RouteMatch(HttpMethod httpMethod, String matchPath, String path, Route target, RouteType routeType) {
         this.httpMethod = httpMethod;
         this.matchPath = matchPath;
         this.path = path;
         this.target = target;
+        this.routeType = routeType;
     }
 
 
@@ -33,7 +38,11 @@ public class RouteMatch {
         return path;
     }
 
-    public Object getTarget() {
+    public RouteType getRouteType() {
+        return routeType;
+    }
+
+    public Route getTarget() {
         return target;
     }
 }

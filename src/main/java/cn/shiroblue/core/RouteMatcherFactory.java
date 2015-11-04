@@ -1,8 +1,7 @@
 package cn.shiroblue.core;
 
 import cn.shiroblue.route.RouteMatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 /**
  * Description:
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
  * on 15/10/30
  */
 public class RouteMatcherFactory {
-    private static final Logger LOG = LoggerFactory.getLogger(RouteMatcherFactory.class);
 
     private static RouteMatcher routeMatcher = null;
 
@@ -21,7 +19,6 @@ public class RouteMatcherFactory {
 
     public static synchronized RouteMatcher get() {
         if (routeMatcher == null) {
-            LOG.debug("create RouteMatcher");
             routeMatcher = new RouteMatcher();
         }
         return routeMatcher;

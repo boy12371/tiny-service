@@ -1,29 +1,26 @@
 package test;
 
-import cn.shiroblue.*;
+import cn.shiroblue.Action;
+import cn.shiroblue.TinyApplication;
 
 /**
  * Description:
  * <p>
  * ======================
  * by WhiteBlue
- * on 15/10/30
+ * on 15/11/3
  */
 public class TestApp implements TinyApplication {
-
     @Override
     public void init() {
-        Action.get("/", new Route() {
-            @Override
-            public Object handle(Request request, Response response) throws Exception {
-                return "hello world!";
-            }
-        });
+        Action.get("/", (request, response) -> "Hello world...");
+
+
+        Action.get("/test", (request, response) -> "诶嘿");
     }
 
     @Override
     public void destroy() {
 
     }
-
 }

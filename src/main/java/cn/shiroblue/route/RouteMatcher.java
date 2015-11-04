@@ -1,7 +1,8 @@
 package cn.shiroblue.route;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.shiroblue.Route;
+import cn.shiroblue.RouteType;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,7 +17,7 @@ import java.util.Set;
  * on 15/10/29
  */
 public class RouteMatcher {
-    private static final Logger LOG = LoggerFactory.getLogger(RouteMatcher.class);
+    private static final Logger LOG = Logger.getLogger(RouteMatcher.class);
 
     private Set<RouteEntry> routes;
 
@@ -43,7 +44,7 @@ public class RouteMatcher {
 
         for (RouteEntry entry : this.routes) {
             if (entry.matches(httpMethod, url)) {
-                RouteMatch routeMatch = new RouteMatch(entry.httpMethod, entry.matchPath, url, entry.target);
+                RouteMatch routeMatch = new RouteMatch(entry.httpMethod, entry.matchPath, url, entry.route, entry.routeType);
                 matchSet.add(routeMatch);
             }
         }
@@ -59,8 +60,11 @@ public class RouteMatcher {
      * @param url        路径
      * @param target     映射对象
      */
-    public void putRouteEntry(HttpMethod httpMethod, String url, Object target) {
-        RouteEntry routeEntry = new RouteEntry(httpMethod, url, target);
+    public void putRouteEntry(HttpMethod httpMethod, String url, Route target, RouteType routeType) {
+        RouteEntry routeEntry = new RouteEntry(httpMethod, url, target, routeType);
+
+        LOG.debug("RouteMap : [actionType : " + httpMethod + " , map : " + url + "]");
+
         this.routes.add(routeEntry);
     }
 
