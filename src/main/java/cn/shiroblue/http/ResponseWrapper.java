@@ -1,4 +1,4 @@
-package cn.shiroblue;
+package cn.shiroblue.http;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,13 +20,12 @@ public class ResponseWrapper extends Response {
         this.delegate = response;
     }
 
+    Response getDelegate() {
+        return delegate;
+    }
 
     public void setDelegate(Response delegate) {
         this.delegate = delegate;
-    }
-
-    Response getDelegate() {
-        return delegate;
     }
 
     @Override

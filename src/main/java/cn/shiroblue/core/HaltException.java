@@ -1,4 +1,4 @@
-package cn.shiroblue;
+package cn.shiroblue.core;
 
 import javax.servlet.http.HttpServletResponse;
 

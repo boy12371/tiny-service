@@ -1,4 +1,4 @@
-package cn.shiroblue;
+package cn.shiroblue.http;
 
 import cn.shiroblue.route.RouteMatch;
 import cn.shiroblue.utils.TinyUtils;
@@ -25,8 +25,6 @@ public class Request {
     private Map<String, String> params;
 
     private HttpServletRequest servletRequest;
-
-    private Session session = null;
 
     /* Lazy loaded stuff */
     private String body = null;
@@ -63,9 +61,26 @@ public class Request {
         changeMatch(match);
     }
 
+    private static Map<String, String> getParams(List<String> request, List<String> matched) {
+        Map<String, String> params = new HashMap<>();
+
+        for (int i = 0; (i < request.size()) && (i < matched.size()); i++) {
+            String matchedPart = matched.get(i);
+            if (TinyUtils.isParam(matchedPart)) {
+                LOG.debug("找到参数: "
+                        + matchedPart
+                        + " = "
+                        + request.get(i));
+                params.put(matchedPart.toLowerCase(), request.get(i));
+            }
+        }
+        //返回不可修改视图
+        return Collections.unmodifiableMap(params);
+    }
+
     protected void changeMatch(RouteMatch match) {
         //接受路径和匹配路径转为数组
-        List<String> requestList = UrlUtils.convertRouteToList(match.getPath());
+        List<String> requestList = UrlUtils.convertRouteToList(match.getUrl());
         List<String> matchedList = UrlUtils.convertRouteToList(match.getMatchPath());
 
         params = getParams(requestList, matchedList);
@@ -135,7 +150,6 @@ public class Request {
     public int port() {
         return servletRequest.getServerPort();
     }
-
 
     /**
      * @return the path info
@@ -212,7 +226,6 @@ public class Request {
         return servletRequest.getContentLength();
     }
 
-
     /**
      * 请求参数
      *
@@ -253,7 +266,6 @@ public class Request {
     public Set<String> queryParams() {
         return servletRequest.getParameterMap().keySet();
     }
-
 
     /**
      * 返回所有header名
@@ -299,7 +311,6 @@ public class Request {
         return (T) servletRequest.getAttribute(attribute);
     }
 
-
     /**
      * @return all attributes
      */
@@ -319,19 +330,6 @@ public class Request {
         return servletRequest;
     }
 
-    /**
-     * Returns the current session associated with this request,
-     * or if the request does not have a session, creates one.
-     *
-     * @return the session associated with this request
-     */
-    public Session session() {
-        if (session == null) {
-            session = new Session(servletRequest.getSession());
-        }
-        return session;
-    }
-
 
     /**
      * @return the part of this request's URL from the protocol name up to the query string in the first line of the HTTP request.
@@ -340,29 +338,11 @@ public class Request {
         return servletRequest.getRequestURI();
     }
 
-
     /**
      * @return Returns the name and version of the protocol the request uses
      */
     public String protocol() {
         return servletRequest.getProtocol();
-    }
-
-    private static Map<String, String> getParams(List<String> request, List<String> matched) {
-        Map<String, String> params = new HashMap<>();
-
-        for (int i = 0; (i < request.size()) && (i < matched.size()); i++) {
-            String matchedPart = matched.get(i);
-            if (TinyUtils.isParam(matchedPart)) {
-                LOG.debug("找到参数: "
-                        + matchedPart
-                        + " = "
-                        + request.get(i));
-                params.put(matchedPart.toLowerCase(), request.get(i));
-            }
-        }
-        //返回不可修改视图
-        return Collections.unmodifiableMap(params);
     }
 
 

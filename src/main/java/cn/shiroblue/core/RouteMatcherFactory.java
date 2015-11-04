@@ -1,7 +1,6 @@
 package cn.shiroblue.core;
 
 import cn.shiroblue.route.RouteMatcher;
-import org.apache.log4j.Logger;
 
 /**
  * Description:

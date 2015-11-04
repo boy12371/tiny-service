@@ -1,9 +1,13 @@
 package cn.shiroblue.core;
 
-import cn.shiroblue.*;
+import cn.shiroblue.TinyApplication;
+import cn.shiroblue.http.Request;
+import cn.shiroblue.http.Response;
+import cn.shiroblue.http.ResponseWrapper;
 import cn.shiroblue.route.HttpMethod;
 import cn.shiroblue.route.RouteMatch;
 import cn.shiroblue.route.RouteMatcher;
+import cn.shiroblue.route.RouteType;
 import cn.shiroblue.utils.UrlUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.BasicConfigurator;
@@ -37,7 +41,7 @@ public class TinyFilter implements Filter {
     private RouteMatcher routeMatcher;
     private ExceptionMapper exceptionMapper;
 
-    private ResponseTransformer responseTransformer;
+    private Render mainRender;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -53,7 +57,7 @@ public class TinyFilter implements Filter {
         this.routeMatcher = RouteMatcherFactory.get();
         this.exceptionMapper = ExceptionMatcherFactory.get();
 
-        this.responseTransformer = RenderFactory.get();
+        this.mainRender = RenderFactory.get();
     }
 
     @Override
@@ -94,6 +98,7 @@ public class TinyFilter implements Filter {
 
         Object bodyContent = null;
 
+        //匹配Router
         List<RouteMatch> listRoute = this.routeMatcher.findMatchRote(httpMethod, url);
 
         Response response = new Response(httpResponse);
@@ -110,7 +115,6 @@ public class TinyFilter implements Filter {
 
                     Request request = new Request(routeMatch, httpRequest);
                     routeMatch.getTarget().handle(request, responseWrapper);
-                    listRoute.remove(routeMatch);
                 }
             }
 
@@ -132,7 +136,7 @@ public class TinyFilter implements Filter {
                 Object element = match.getTarget().handle(request, responseWrapper);
 
                 //映射的方法对视图文件进行渲染
-                Object result = this.responseTransformer.render(element);
+                Object result = this.mainRender.rend(element);
 
                 if (result != null) {
                     bodyContent = result;

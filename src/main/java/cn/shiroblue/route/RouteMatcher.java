@@ -1,7 +1,5 @@
 package cn.shiroblue.route;
 
-import cn.shiroblue.Route;
-import cn.shiroblue.RouteType;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;

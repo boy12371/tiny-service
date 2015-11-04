@@ -7,9 +7,9 @@ package cn.shiroblue.core;
  * by WhiteBlue
  * on 15/10/30
  */
-public interface ResponseTransformer {
+public interface Render {
 
 
-    String render(Object model) throws Exception;
+    String rend(Object model) throws Exception;
 
 }

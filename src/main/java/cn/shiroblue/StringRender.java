@@ -1,6 +1,6 @@
 package cn.shiroblue;
 
-import cn.shiroblue.core.ResponseTransformer;
+import cn.shiroblue.core.Render;
 
 /**
  * Description:
@@ -9,9 +9,9 @@ import cn.shiroblue.core.ResponseTransformer;
  * by WhiteBlue
  * on 15/10/30
  */
-public class DefaultRender implements ResponseTransformer {
+public class StringRender implements Render {
     @Override
-    public String render(Object model) throws Exception {
+    public String rend(Object model) throws Exception {
         return model.toString();
     }
 }

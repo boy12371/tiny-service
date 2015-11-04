@@ -1,4 +1,4 @@
-package cn.shiroblue;
+package cn.shiroblue.route;
 
 /**
  * Description:

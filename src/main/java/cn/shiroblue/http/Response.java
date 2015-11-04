@@ -1,4 +1,4 @@
-package cn.shiroblue;
+package cn.shiroblue.http;
 
 
 import org.apache.log4j.Logger;

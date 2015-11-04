@@ -1,7 +1,6 @@
 package cn.shiroblue.core;
 
-import cn.shiroblue.Request;
-import cn.shiroblue.Response;
+import cn.shiroblue.http.Response;
 
 import javax.servlet.http.HttpServletRequest;
 

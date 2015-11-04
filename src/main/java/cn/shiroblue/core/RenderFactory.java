@@ -1,6 +1,6 @@
 package cn.shiroblue.core;
 
-import cn.shiroblue.DefaultRender;
+import cn.shiroblue.StringRender;
 
 /**
  * Description:
@@ -10,14 +10,14 @@ import cn.shiroblue.DefaultRender;
  * on 15/10/30
  */
 public class RenderFactory {
-    private static ResponseTransformer render = null;
+    private static Render render = null;
 
     private RenderFactory() {
     }
 
-    public static ResponseTransformer get() {
+    public static Render get() {
         if (render == null) {
-            render = new DefaultRender();
+            render = new StringRender();
         }
         return render;
     }
@@ -27,7 +27,7 @@ public class RenderFactory {
      *
      * @param responseTransformer Render impl
      */
-    public static void setRennder(ResponseTransformer responseTransformer) {
+    public static void setRennder(Render responseTransformer) {
         render = responseTransformer;
     }
 

@@ -1,7 +1,5 @@
 package cn.shiroblue.route;
 
-import cn.shiroblue.Route;
-import cn.shiroblue.RouteType;
 import cn.shiroblue.utils.UrlUtils;
 
 import java.util.List;
@@ -43,15 +41,15 @@ public class RouteEntry {
     /**
      * 路径匹配
      *
-     * @param httpMethod httpMethod
-     * @param path       处理过的url
+     * @param requestMethod request httpMethod
+     * @param path          clean url
      * @return boolean
      */
-    boolean matches(HttpMethod httpMethod, String path) {
+    boolean matches(HttpMethod requestMethod, String path) {
         boolean match = matchPath(path);
 
         if (match) {
-            if (!((httpMethod == HttpMethod.before || httpMethod == HttpMethod.after) || (this.httpMethod == httpMethod))) {
+            if (!((this.httpMethod == HttpMethod.before || this.httpMethod == HttpMethod.after) || (this.httpMethod == requestMethod))) {
                 match = false;
             }
         }

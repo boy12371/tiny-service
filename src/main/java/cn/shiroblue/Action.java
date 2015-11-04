@@ -2,6 +2,8 @@ package cn.shiroblue;
 
 import cn.shiroblue.core.RouteMatcherFactory;
 import cn.shiroblue.route.HttpMethod;
+import cn.shiroblue.route.Route;
+import cn.shiroblue.route.RouteType;
 
 /**
  * Description:
