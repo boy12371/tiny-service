@@ -15,19 +15,19 @@ public class HaltException extends RuntimeException {
     private int statusCode = HttpServletResponse.SC_OK;
     private String body = null;
 
-    HaltException() {
+    public HaltException() {
         super();
     }
 
-    HaltException(int statusCode) {
+    public HaltException(int statusCode) {
         this.statusCode = statusCode;
     }
 
-    HaltException(String body) {
+    public HaltException(String body) {
         this.body = body;
     }
 
-    HaltException(int statusCode, String body) {
+    public HaltException(int statusCode, String body) {
         this.statusCode = statusCode;
         this.body = body;
     }

@@ -18,10 +18,8 @@ public class RouteEntry {
     String matchPath;
 
     //目标Route对象
-    Route route;
+    Object route;
 
-
-    RouteType routeType;
 
     /**
      * 构造函数(执行格式化)
@@ -30,12 +28,11 @@ public class RouteEntry {
      * @param matchUrl   未处理url
      * @param route      Route
      */
-    public RouteEntry(HttpMethod httpMethod, String matchUrl, Route route, RouteType routeType) {
+    public RouteEntry(HttpMethod httpMethod, String matchUrl, Object route) {
         this.httpMethod = httpMethod;
         //路径格式化
         this.matchPath = UrlUtils.pathFormat(matchUrl);
         this.route = route;
-        this.routeType = routeType;
     }
 
     /**

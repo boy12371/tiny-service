@@ -23,14 +23,11 @@ public class TestApp implements TinyApplication {
 
         Action.before("/*", (request, response) -> {
             System.out.println("首拦截器");
-
-            return null;
         });
 
         Action.after("/*", (request, response) -> {
             System.out.println("尾拦截器");
 
-            return null;
         });
 
     }

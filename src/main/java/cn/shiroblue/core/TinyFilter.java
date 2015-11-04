@@ -4,10 +4,7 @@ import cn.shiroblue.TinyApplication;
 import cn.shiroblue.http.Request;
 import cn.shiroblue.http.Response;
 import cn.shiroblue.http.ResponseWrapper;
-import cn.shiroblue.route.HttpMethod;
-import cn.shiroblue.route.RouteMatch;
-import cn.shiroblue.route.RouteMatcher;
-import cn.shiroblue.route.RouteType;
+import cn.shiroblue.route.*;
 import cn.shiroblue.utils.UrlUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.BasicConfigurator;
@@ -109,12 +106,13 @@ public class TinyFilter implements Filter {
         try {
             //首拦截器执行
             for (RouteMatch routeMatch : listRoute) {
-                if ((routeMatch.getRouteType() == RouteType.FILTER) && (routeMatch.getHttpMethod() == HttpMethod.before)) {
+                if ((routeMatch.getTarget() instanceof FilterRoute) && (routeMatch.getHttpMethod() == HttpMethod.before)) {
 
-                    LOG.debug("Action : [actionType:" + routeMatch.getRouteType().name() + ", url: " + routeMatch.getMatchPath() + "] ");
+                    LOG.debug("Action : [actionType: Filter , url: " + routeMatch.getMatchPath() + "] ");
 
                     Request request = new Request(routeMatch, httpRequest);
-                    routeMatch.getTarget().handle(request, responseWrapper);
+
+                    ((FilterRoute) routeMatch.getTarget()).handle(request, responseWrapper);
                 }
             }
 
@@ -122,18 +120,17 @@ public class TinyFilter implements Filter {
 
             //方法映射查找
             for (RouteMatch routeMatch : listRoute) {
-                if (routeMatch.getRouteType() == RouteType.ACTION) {
+                if (routeMatch.getTarget() instanceof HandlerRoute) {
                     match = routeMatch;
                 }
             }
 
             //执行
             if (match != null) {
-
-                LOG.debug("Action : [actionType:" + match.getRouteType().name() + ", url: " + match.getMatchPath() + "] ");
+                LOG.debug("Action : [actionType: Handler , url: " + match.getMatchPath() + "] ");
 
                 Request request = new Request(match, httpRequest);
-                Object element = match.getTarget().handle(request, responseWrapper);
+                Object element = ((HandlerRoute) match.getTarget()).handle(request, responseWrapper);
 
                 //映射的方法对视图文件进行渲染
                 Object result = this.mainRender.rend(element);
@@ -145,12 +142,12 @@ public class TinyFilter implements Filter {
 
             //尾拦截器执行
             for (RouteMatch routeMatch : listRoute) {
-                if ((routeMatch.getRouteType() == RouteType.FILTER) && (routeMatch.getHttpMethod() == HttpMethod.after)) {
+                if ((routeMatch.getTarget() instanceof FilterRoute) && (routeMatch.getHttpMethod() == HttpMethod.after)) {
 
-                    LOG.debug("Action : [actionType:" + routeMatch.getRouteType().name() + ", url: " + routeMatch.getMatchPath() + "] ");
+                    LOG.debug("Action : [actionType: Filter , url: " + routeMatch.getMatchPath() + "] ");
 
                     Request request = new Request(routeMatch, httpRequest);
-                    routeMatch.getTarget().handle(request, responseWrapper);
+                    ((FilterRoute) routeMatch.getTarget()).handle(request, responseWrapper);
 
                     String bodyAfterFilter = response.body();
                     if (bodyAfterFilter != null) {
@@ -164,6 +161,7 @@ public class TinyFilter implements Filter {
             httpResponse.setStatus(hEx.getStatusCode());
             if (hEx.getBody() != null) {
                 bodyContent = hEx.getBody();
+
             } else {
                 bodyContent = "";
             }

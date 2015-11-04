@@ -11,22 +11,19 @@ public class RouteMatch {
     private HttpMethod httpMethod;
     private String matchPath;
     private String url;
-    private RouteType routeType;
-    private Route target;
+    private Object target;
 
     /**
      * @param httpMethod request method
      * @param matchPath  route match path
      * @param url        request url
      * @param target     action target
-     * @param routeType  the route type
      */
-    public RouteMatch(HttpMethod httpMethod, String matchPath, String url, Route target, RouteType routeType) {
+    public RouteMatch(HttpMethod httpMethod, String matchPath, String url, Object target) {
         this.httpMethod = httpMethod;
         this.matchPath = matchPath;
         this.url = url;
         this.target = target;
-        this.routeType = routeType;
     }
 
 
@@ -42,11 +39,7 @@ public class RouteMatch {
         return url;
     }
 
-    public RouteType getRouteType() {
-        return routeType;
-    }
-
-    public Route getTarget() {
+    public Object getTarget() {
         return target;
     }
 }

@@ -8,9 +8,9 @@ import cn.shiroblue.http.Response;
  * <p>
  * ======================
  * by WhiteBlue
- * on 15/10/30
+ * on 15/11/4
  */
-public interface Route {
+public interface HandlerRoute {
 
     Object handle(Request request, Response response) throws Exception;
 
