@@ -1,7 +1,8 @@
 package cn.shiroblue.http;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.io.IOException;
  * on 15/10/29
  */
 public class Response {
-    private static final Logger LOG = Logger.getLogger(Response.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Response.class);
 
     private HttpServletResponse response;
     private String body;

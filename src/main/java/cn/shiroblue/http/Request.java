@@ -4,7 +4,8 @@ import cn.shiroblue.route.RouteMatch;
 import cn.shiroblue.utils.TinyUtils;
 import cn.shiroblue.utils.UrlUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -18,7 +19,7 @@ import java.util.*;
  */
 public class Request {
 
-    private static final Logger LOG = Logger.getLogger(Request.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Request.class);
 
     private static final String USER_AGENT = "user-agent";
 
@@ -32,29 +33,6 @@ public class Request {
 
     private Set<String> headers = null;
 
-    //    request.body              # request body sent by the client (see below), DONE
-    //    request.scheme            # "http"                                DONE
-    //    request.path_info         # "/foo",                               DONE
-    //    request.port              # 80                                    DONE
-    //    request.request_method    # "GET",                                DONE
-    //    request.query_string      # "",                                   DONE
-    //    request.content_length    # length of request.body,               DONE
-    //    request.media_type        # media type of request.body            DONE, content type?
-    //    request.host              # "example.com"                         DONE
-    //    request["SOME_HEADER"]    # value of SOME_HEADER header,          DONE
-    //    request.user_agent        # user agent (used by :agent condition) DONE
-    //    request.url               # "http://example.com/example/foo"      DONE
-    //    request.ip                # client IP address                     DONE
-    //    request.env               # raw env hash handed in by Rack,       DONE
-    //    request.get?              # true (similar methods for other verbs)
-    //    request.secure?           # false (would be true over ssl)
-    //    request.forwarded?        # true (if running behind a reverse proxy)
-    //    request.cookies           # hash of browser cookies,              DONE
-    //    request.xhr?              # is this an ajax request?
-    //    request.script_name       # "/example"
-    //    request.form_data?        # false
-    //    request.referrer          # the referrer of the client or '/'
-
 
     public Request(RouteMatch match, HttpServletRequest request) {
         this.servletRequest = request;
@@ -67,14 +45,10 @@ public class Request {
         for (int i = 0; (i < request.size()) && (i < matched.size()); i++) {
             String matchedPart = matched.get(i);
             if (TinyUtils.isParam(matchedPart)) {
-                LOG.debug("找到参数: "
-                        + matchedPart
-                        + " = "
-                        + request.get(i));
                 params.put(matchedPart.toLowerCase(), request.get(i));
             }
         }
-        //返回不可修改视图
+        //can't edit
         return Collections.unmodifiableMap(params);
     }
 
@@ -102,11 +76,7 @@ public class Request {
      * @param param the param
      * @return null if the given param is null or not found
      */
-    public String pathParams(String param) {
-        if (param == null) {
-            return null;
-        }
-
+    public String pathParam(String param) {
         if (param.startsWith(":")) {
             return params.get(param.toLowerCase()); // NOSONAR
         } else {

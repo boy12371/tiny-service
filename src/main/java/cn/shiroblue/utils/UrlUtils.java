@@ -36,10 +36,7 @@ public class UrlUtils {
      * @return String
      */
     public static String pathFormat(String path) {
-        if (path == null) {
-            return "";
-        }
-        if (path.charAt(path.length() - 1) == '/') {
+        if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
         }
 

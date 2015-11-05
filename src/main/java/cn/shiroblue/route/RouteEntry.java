@@ -61,7 +61,6 @@ public class RouteEntry {
      * @return boolean
      */
     private boolean matchPath(String url) {
-
         //完全一致则返回
         if (this.matchPath.equals(url)) {
             return true;
@@ -74,53 +73,42 @@ public class RouteEntry {
         int thisPathSize = thisPathList.size();
         int pathSize = pathList.size();
 
-        //执行完全匹配
+        //对称
         if (thisPathSize == pathSize) {
             for (int i = 0; i < thisPathSize; i++) {
+                //=>mathPath
                 String thisPathPart = thisPathList.get(i);
+                //=>url
                 String pathPart = pathList.get(i);
 
-                //*匹配
                 if ((i == thisPathSize - 1) && (thisPathPart.equals("*") && this.matchPath.endsWith("*"))) {
                     return true;
                 }
 
-                //pathParam
-                if ((!thisPathPart.startsWith(":"))
-                        && !thisPathPart.equals(pathPart)
-                        && !thisPathPart.equals("*")) {
+                if ((!thisPathPart.startsWith(":")) && !thisPathPart.equals(pathPart) && !thisPathPart.equals("*")) {
                     return false;
                 }
             }
             return true;
+            //非对称
         } else {
-            // * 宽匹配
+            //结尾为全匹配则逐个比对
             if (this.matchPath.endsWith("*")) {
-                if (pathSize == (thisPathSize - 1) && (url.endsWith("/"))) {
-                    // Hack for making wildcards work with trailing slash
-                    pathList.add("");
-                    pathList.add("");
-                    pathSize += 2;
-                }
-
                 if (thisPathSize < pathSize) {
                     for (int i = 0; i < thisPathSize; i++) {
                         String thisPathPart = thisPathList.get(i);
                         String pathPart = pathList.get(i);
-                        if (thisPathPart.equals("*") && (i == thisPathSize - 1) && this.matchPath.endsWith("*")) {
-                            // wildcard match
+
+                        if ((i == thisPathSize - 1) && thisPathPart.equals("*") && this.matchPath.endsWith("*")) {
                             return true;
                         }
-                        if (!thisPathPart.startsWith(":")
-                                && !thisPathPart.equals(pathPart)
-                                && !thisPathPart.equals("*")) {
+
+                        if (!thisPathPart.startsWith(":") && !thisPathPart.equals(pathPart) && !thisPathPart.equals("*")) {
                             return false;
                         }
                     }
-                    // All parts matched
                     return true;
                 }
-                // End check wild card
             }
             return false;
         }

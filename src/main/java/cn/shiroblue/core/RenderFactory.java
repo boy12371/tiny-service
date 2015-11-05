@@ -27,7 +27,7 @@ public class RenderFactory {
      *
      * @param responseTransformer Render impl
      */
-    public static void setRennder(Render responseTransformer) {
+    public static void setRender(Render responseTransformer) {
         render = responseTransformer;
     }
 

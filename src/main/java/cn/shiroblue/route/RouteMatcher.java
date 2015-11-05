@@ -1,6 +1,5 @@
 package cn.shiroblue.route;
 
-import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,8 +14,6 @@ import java.util.Set;
  * on 15/10/29
  */
 public class RouteMatcher {
-    private static final Logger LOG = Logger.getLogger(RouteMatcher.class);
-
     private Set<RouteEntry> routes;
 
     public RouteMatcher() {
@@ -60,8 +57,6 @@ public class RouteMatcher {
      */
     public void putRouteEntry(HttpMethod httpMethod, String url, Object target) {
         RouteEntry routeEntry = new RouteEntry(httpMethod, url, target);
-
-        LOG.debug("RouteMap : [actionType : " + httpMethod + " , map : " + url + "]");
 
         this.routes.add(routeEntry);
     }

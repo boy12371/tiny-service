@@ -1,6 +1,6 @@
 package test;
 
-import cn.shiroblue.Action;
+import cn.shiroblue.Route;
 import cn.shiroblue.TinyApplication;
 
 /**
@@ -13,20 +13,17 @@ import cn.shiroblue.TinyApplication;
 public class TestApp implements TinyApplication {
     @Override
     public void init() {
-        Action.get("/", (request, response) -> "Hello world...");
+        Route.get("/", (request, response) -> "Hello world...");
 
 
-        Action.get("/test", (request, response) -> {
-            System.out.println("执行模式");
-            return "执行";
+        Route.get("/test/:param", (request, response) -> "Test" + request.pathParam("param"));
+
+        Route.before("/*", (request, response) -> {
+            System.out.println("Before Filter");
         });
 
-        Action.before("/*", (request, response) -> {
-            System.out.println("首拦截器");
-        });
-
-        Action.after("/*", (request, response) -> {
-            System.out.println("尾拦截器");
+        Route.after("/*", (request, response) -> {
+            System.out.println("After Filter");
 
         });
 

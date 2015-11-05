@@ -7,8 +7,8 @@ import cn.shiroblue.http.ResponseWrapper;
 import cn.shiroblue.route.*;
 import cn.shiroblue.utils.UrlUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ import java.util.List;
  * on 15/10/25
  */
 public class TinyFilter implements Filter {
-    private static final Logger LOG = Logger.getLogger(TinyFilter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TinyFilter.class);
 
     // web.xml 配置参数
     private static final String APPLICATION_CLASS_PARAM = "applicationClass";
@@ -42,13 +42,8 @@ public class TinyFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
-        //默认日志
-        BasicConfigurator.configure();
-
         this.tinyApplication = getApplication(filterConfig);
 
-        //初始化路径映射
         this.tinyApplication.init();
 
         this.routeMatcher = RouteMatcherFactory.get();
@@ -71,6 +66,9 @@ public class TinyFilter implements Filter {
     private TinyApplication getApplication(FilterConfig filterConfig) throws ServletException {
         try {
             String applicationClassName = filterConfig.getInitParameter(APPLICATION_CLASS_PARAM);
+
+            LOG.debug("Server : launch a Srever with {} ", applicationClassName);
+
             Class<?> applicationClass = Class.forName(applicationClassName);
             return (TinyApplication) applicationClass.newInstance();
         } catch (Exception e) {
@@ -133,7 +131,7 @@ public class TinyFilter implements Filter {
                 Object element = ((HandlerRoute) match.getTarget()).handle(request, responseWrapper);
 
                 //映射的方法对视图文件进行渲染
-                Object result = this.mainRender.rend(element);
+                String result = this.mainRender.rend(element);
 
                 if (result != null) {
                     bodyContent = result;
@@ -157,11 +155,11 @@ public class TinyFilter implements Filter {
             }
 
         } catch (HaltException hEx) {
-            LOG.debug("halt...");
+            LOG.debug("halt with code {}", hEx.getStatusCode());
+
             httpResponse.setStatus(hEx.getStatusCode());
             if (hEx.getBody() != null) {
                 bodyContent = hEx.getBody();
-
             } else {
                 bodyContent = "";
             }
