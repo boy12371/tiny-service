@@ -1,4 +1,4 @@
-package test;
+package cn.shiroblue.test;
 
 import cn.shiroblue.Route;
 import cn.shiroblue.TinyApplication;
