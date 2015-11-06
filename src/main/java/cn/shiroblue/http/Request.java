@@ -33,6 +33,9 @@ public class Request {
 
     private Set<String> headers = null;
 
+    public Request(HttpServletRequest servletRequest) {
+        this.servletRequest = servletRequest;
+    }
 
     public Request(RouteMatch match, HttpServletRequest request) {
         this.servletRequest = request;
@@ -49,15 +52,26 @@ public class Request {
             }
         }
         //can't edit
-        return Collections.unmodifiableMap(params);
+        return params;
     }
 
-    protected void changeMatch(RouteMatch match) {
+    /**
+     * 更改匹配路径
+     *
+     * @param match RouteMatch
+     */
+    private void changeMatch(RouteMatch match) {
         //接受路径和匹配路径转为数组
         List<String> requestList = UrlUtils.convertRouteToList(match.getUrl());
         List<String> matchedList = UrlUtils.convertRouteToList(match.getMatchPath());
 
         params = getParams(requestList, matchedList);
+    }
+
+
+    public void bind(RouteMatch match) {
+        this.clearParam();
+        this.changeMatch(match);
     }
 
     /**
@@ -313,6 +327,13 @@ public class Request {
      */
     public String protocol() {
         return servletRequest.getProtocol();
+    }
+
+
+    public void clearParam() {
+        if (this.params != null) {
+            this.params.clear();
+        }
     }
 
 

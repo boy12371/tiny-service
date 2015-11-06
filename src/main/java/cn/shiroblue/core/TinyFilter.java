@@ -1,5 +1,7 @@
 package cn.shiroblue.core;
 
+import cn.shiroblue.ExceptionHandlerImpl;
+import cn.shiroblue.HaltException;
 import cn.shiroblue.TinyApplication;
 import cn.shiroblue.http.Request;
 import cn.shiroblue.http.Response;
@@ -32,6 +34,8 @@ public class TinyFilter implements Filter {
 
     //请求参数
     private static final String HTTP_METHOD_OVERRIDE_HEADER = "X-HTTP-Method-Override";
+
+    private static final String INTERNAL_ERROR = "<html><body><h2>500 Internal Error</h2></body></html>";
 
     private TinyApplication tinyApplication;
 
@@ -96,7 +100,11 @@ public class TinyFilter implements Filter {
         //匹配Router
         List<RouteMatch> listRoute = this.routeMatcher.findMatchRote(httpMethod, url);
 
+        //包装Http对象
         Response response = new Response(httpResponse);
+        Request request = new Request(httpRequest);
+
+        //重定向判断用
         ResponseWrapper responseWrapper = new ResponseWrapper(response);
 
         LOG.debug("Request : [httpMethod:" + httpMethod + ", url: " + url + "] ");
@@ -108,7 +116,7 @@ public class TinyFilter implements Filter {
 
                     LOG.debug("Action : [actionType: Filter , url: " + routeMatch.getMatchPath() + "] ");
 
-                    Request request = new Request(routeMatch, httpRequest);
+                    request.bind(routeMatch);
 
                     ((FilterRoute) routeMatch.getTarget()).handle(request, responseWrapper);
                 }
@@ -125,9 +133,10 @@ public class TinyFilter implements Filter {
 
             //执行
             if (match != null) {
+
                 LOG.debug("Action : [actionType: Handler , url: " + match.getMatchPath() + "] ");
 
-                Request request = new Request(match, httpRequest);
+                request.bind(match);
                 Object element = ((HandlerRoute) match.getTarget()).handle(request, responseWrapper);
 
                 //映射的方法对视图文件进行渲染
@@ -144,7 +153,7 @@ public class TinyFilter implements Filter {
 
                     LOG.debug("Action : [actionType: Filter , url: " + routeMatch.getMatchPath() + "] ");
 
-                    Request request = new Request(routeMatch, httpRequest);
+                    request.bind(routeMatch);
                     ((FilterRoute) routeMatch.getTarget()).handle(request, responseWrapper);
 
                     String bodyAfterFilter = response.body();
@@ -168,11 +177,16 @@ public class TinyFilter implements Filter {
             //异常拦截处理
             ExceptionHandlerImpl handler = this.exceptionMapper.getHandler(e);
             if (handler != null) {
-                handler.handle(e, httpRequest, responseWrapper);
+                request.clearParam();
+                handler.handle(e, request, responseWrapper);
                 String bodyAfterHandler = response.body();
                 if (bodyAfterHandler != null) {
                     bodyContent = bodyAfterHandler;
                 }
+            } else {
+                LOG.error("", e);
+                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                bodyContent = INTERNAL_ERROR;
             }
         }
 

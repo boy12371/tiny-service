@@ -10,7 +10,7 @@
         <filter-class>cn.shiroblue.core.TinyFilter</filter-class>
         <init-param>
             <param-name>applicationClass</param-name>
-            <param-value>cn.shiroblue.test.TestApp</param-value>
+            <param-value>com.whiteblue.TestApp</param-value>
         </init-param>
     </filter>
 

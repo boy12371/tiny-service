@@ -1,5 +1,7 @@
 package cn.shiroblue.core;
 
+import cn.shiroblue.ExceptionHandlerImpl;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +34,9 @@ public class ExceptionMapper {
     public ExceptionHandlerImpl getHandler(Class<? extends Exception> exceptionClass) {
         if (!this.exceptionMap.containsKey(exceptionClass)) {
 
-            Class<?> superclass = exceptionClass.getSuperclass();
-            do {
+            Class superclass = exceptionClass.getSuperclass();
+
+            while (superclass != null) {
                 if (this.exceptionMap.containsKey(superclass)) {
                     ExceptionHandlerImpl handler = this.exceptionMap.get(superclass);
                     this.exceptionMap.put(exceptionClass, handler);
@@ -41,14 +44,13 @@ public class ExceptionMapper {
                 }
 
                 superclass = superclass.getSuperclass();
-            } while (superclass != null);
+            }
 
             //若不包含则加空值
             this.exceptionMap.put(exceptionClass, null);
             return null;
         }
 
-        // Direct map
         return this.exceptionMap.get(exceptionClass);
     }
 
