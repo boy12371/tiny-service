@@ -3,11 +3,12 @@ package cn.shiroblue.http;
 import cn.shiroblue.route.RouteMatch;
 import cn.shiroblue.utils.TinyUtils;
 import cn.shiroblue.utils.UrlUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -197,7 +198,13 @@ public class Request {
 
     private void readBodyAsBytes() {
         try {
-            bodyAsBytes = IOUtils.toByteArray(servletRequest.getInputStream());
+            byte[] buffer = new byte[1024];
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            InputStream inputStream = this.servletRequest.getInputStream();
+            while (-1 != inputStream.read(buffer)) {
+                byteArrayOutputStream.write(buffer);
+            }
+            bodyAsBytes = byteArrayOutputStream.toByteArray();
         } catch (Exception e) {
             LOG.warn("Exception when reading body", e);
         }

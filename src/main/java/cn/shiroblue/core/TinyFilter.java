@@ -8,7 +8,6 @@ import cn.shiroblue.http.Response;
 import cn.shiroblue.http.ResponseWrapper;
 import cn.shiroblue.route.*;
 import cn.shiroblue.utils.UrlUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +15,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -200,11 +199,11 @@ public class TinyFilter implements Filter {
                 if (httpResponse.getContentType() == null) {
                     httpResponse.setContentType("text/html; charset=utf-8");
                 }
-                OutputStream outputStream = httpResponse.getOutputStream();
+                PrintWriter printWriter = httpResponse.getWriter();
 
-                IOUtils.write(bodyContent.toString(), outputStream);
+                printWriter.write(bodyContent.toString());
 
-                outputStream.flush();
+                printWriter.flush();
             }
         } else if (filterChain != null) {
             filterChain.doFilter(httpRequest, httpResponse);
