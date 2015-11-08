@@ -32,6 +32,7 @@ import java.util.List;
  */
 public class TinyHandler {
     private static final Logger LOG = LoggerFactory.getLogger(TinyHandler.class);
+
     private static final String HTTP_METHOD_OVERRIDE_HEADER = "X-HTTP-Method-Override";
     private static final String INTERNAL_ERROR = "<html><body><h2>500 Internal Error</h2></body></html>";
 
@@ -49,7 +50,7 @@ public class TinyHandler {
     }
 
 
-    public void handle(HttpServletRequest httpRequest, HttpServletResponse httpResponse, FilterChain filterChain) throws IOException, ServletException {
+    public boolean handle(HttpServletRequest httpRequest, HttpServletResponse httpResponse, FilterChain filterChain) throws IOException, ServletException {
         //支持REST方法
         String method = httpRequest.getHeader(HTTP_METHOD_OVERRIDE_HEADER);
         if (method == null) {
@@ -176,6 +177,8 @@ public class TinyHandler {
         } else if (filterChain != null) {
             filterChain.doFilter(httpRequest, httpResponse);
         }
+
+        return consumed;
     }
 
 

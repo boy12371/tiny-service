@@ -27,6 +27,6 @@ public class Catch {
             }
         };
 
-        ExceptionMapperFactory.getExceptionMapper().map(exceptionClass, wrapper);
+        ExceptionMapperFactory.get().map(exceptionClass, wrapper);
     }
 }
