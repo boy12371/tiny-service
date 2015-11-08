@@ -22,6 +22,13 @@
             <version>4.0.0-b01</version>
         </dependency>
 
+        <!--内置jetty支持-->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.3.2.v20150730</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>TinyService</finalName>

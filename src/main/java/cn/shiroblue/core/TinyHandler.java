@@ -34,12 +34,15 @@ public class TinyHandler {
     private static final Logger LOG = LoggerFactory.getLogger(TinyHandler.class);
     private static final String HTTP_METHOD_OVERRIDE_HEADER = "X-HTTP-Method-Override";
     private static final String INTERNAL_ERROR = "<html><body><h2>500 Internal Error</h2></body></html>";
+
     private RouteMatcher routeMatcher;
     private ExceptionMapper exceptionMapper;
     private Render defaultRender;
 
-    //init modules
-    public void init() {
+    private boolean isServletContext;
+
+    public TinyHandler(boolean isServletContext) {
+        this.isServletContext = isServletContext;
         this.routeMatcher = RouteMatcherFactory.get();
         this.exceptionMapper = ExceptionMapperFactory.get();
         this.defaultRender = RenderFactory.get();
@@ -73,7 +76,6 @@ public class TinyHandler {
             //search match FilterRoute and do handle
             for (RouteMatch routeMatch : listRoute) {
                 if ((routeMatch.getTarget() instanceof FilterRoute) && (routeMatch.getHttpMethod() == HttpMethod.before)) {
-
                     LOG.debug("Action : [actionType: Filter , url: " + routeMatch.getMatchPath() + "] ");
 
                     request.bind(routeMatch);
@@ -93,7 +95,6 @@ public class TinyHandler {
 
             //do handle
             if (match != null) {
-
                 LOG.debug("Action : [actionType: Handler , url: " + match.getMatchPath() + "] ");
 
                 request.bind(match);

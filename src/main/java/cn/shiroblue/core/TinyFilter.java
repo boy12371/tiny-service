@@ -24,14 +24,15 @@ public class TinyFilter implements Filter {
 
     private TinyApplication tinyApplication;
 
+    private TinyHandler tinyHandler;
+
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         this.tinyApplication = getApplication(filterConfig);
+        this.tinyHandler = new TinyHandler(true);
 
         this.tinyApplication.init();
-
-
     }
 
     @Override
@@ -63,7 +64,7 @@ public class TinyFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 
-
+        tinyHandler.handle(httpRequest, httpResponse, filterChain);
     }
 
 
