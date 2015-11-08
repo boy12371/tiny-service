@@ -1,5 +1,6 @@
 package cn.shiroblue.route;
 
+import cn.shiroblue.modules.Render;
 import cn.shiroblue.utils.UrlUtils;
 
 import java.util.List;
@@ -12,14 +13,15 @@ import java.util.List;
  * on 15/10/29
  */
 public class RouteEntry {
-    HttpMethod httpMethod;
+    public HttpMethod httpMethod;
 
     //匹配路径
-    String matchPath;
+    public String matchPath;
 
     //目标Route对象
-    Object route;
+    public Object route;
 
+    public Render render;
 
     /**
      * 构造函数(执行格式化)
@@ -33,6 +35,16 @@ public class RouteEntry {
         //路径格式化
         this.matchPath = UrlUtils.pathFormat(matchUrl);
         this.route = route;
+        this.render = null;
+    }
+
+
+    public RouteEntry(HttpMethod httpMethod, String matchUrl, Object route, Render render) {
+        this.httpMethod = httpMethod;
+        //路径格式化
+        this.matchPath = UrlUtils.pathFormat(matchUrl);
+        this.route = route;
+        this.render = render;
     }
 
     /**
@@ -42,7 +54,7 @@ public class RouteEntry {
      * @param path          clean url
      * @return boolean
      */
-    boolean matches(HttpMethod requestMethod, String path) {
+    public boolean matches(HttpMethod requestMethod, String path) {
         boolean match = matchPath(path);
 
         if (match) {

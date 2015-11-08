@@ -1,6 +1,6 @@
-package cn.shiroblue;
+package cn.shiroblue.modules;
 
-import cn.shiroblue.core.Render;
+import cn.shiroblue.modules.Render;
 
 /**
  * Description:
@@ -9,7 +9,7 @@ import cn.shiroblue.core.Render;
  * by WhiteBlue
  * on 15/10/30
  */
-public class StringRender implements Render {
+public class DefaultRender implements Render {
     @Override
     public String rend(Object model) throws Exception {
         return model.toString();

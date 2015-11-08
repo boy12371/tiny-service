@@ -1,8 +1,10 @@
 package cn.shiroblue;
 
-import cn.shiroblue.core.ExceptionMatcherFactory;
+import cn.shiroblue.core.ExceptionMapperFactory;
 import cn.shiroblue.http.Request;
 import cn.shiroblue.http.Response;
+import cn.shiroblue.modules.ExceptionHandler;
+import cn.shiroblue.modules.ExceptionHandlerImpl;
 
 /**
  * Description:
@@ -25,6 +27,6 @@ public class Catch {
             }
         };
 
-        ExceptionMatcherFactory.get().map(exceptionClass, wrapper);
+        ExceptionMapperFactory.getExceptionMapper().map(exceptionClass, wrapper);
     }
 }

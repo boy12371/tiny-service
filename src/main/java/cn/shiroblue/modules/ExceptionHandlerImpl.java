@@ -1,4 +1,4 @@
-package cn.shiroblue;
+package cn.shiroblue.modules;
 
 import cn.shiroblue.http.Request;
 import cn.shiroblue.http.Response;

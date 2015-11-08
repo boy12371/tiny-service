@@ -1,4 +1,4 @@
-package cn.shiroblue.core;
+package cn.shiroblue.modules;
 
 /**
  * Description:

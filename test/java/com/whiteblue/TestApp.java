@@ -1,7 +1,7 @@
 package com.whiteblue;
 
 import cn.shiroblue.Catch;
-import cn.shiroblue.ExceptionHandler;
+import cn.shiroblue.modules.ExceptionHandler;
 import cn.shiroblue.Route;
 import cn.shiroblue.TinyApplication;
 import cn.shiroblue.http.Request;

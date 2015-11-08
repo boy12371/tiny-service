@@ -1,5 +1,7 @@
 package cn.shiroblue.route;
 
+import cn.shiroblue.modules.Render;
+
 /**
  * Description:
  * 匹配后的路径对象
@@ -9,9 +11,14 @@ package cn.shiroblue.route;
  */
 public class RouteMatch {
     private HttpMethod httpMethod;
+
     private String matchPath;
+
     private String url;
+
     private Object target;
+
+    private Render render;
 
     /**
      * @param httpMethod request method
@@ -19,11 +26,12 @@ public class RouteMatch {
      * @param url        request url
      * @param target     action target
      */
-    public RouteMatch(HttpMethod httpMethod, String matchPath, String url, Object target) {
+    public RouteMatch(HttpMethod httpMethod, String matchPath, String url, Object target, Render render) {
         this.httpMethod = httpMethod;
         this.matchPath = matchPath;
         this.url = url;
         this.target = target;
+        this.render = render;
     }
 
 
@@ -41,5 +49,9 @@ public class RouteMatch {
 
     public Object getTarget() {
         return target;
+    }
+
+    public Render getRender() {
+        return render;
     }
 }

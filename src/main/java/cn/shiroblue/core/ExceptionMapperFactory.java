@@ -1,18 +1,19 @@
 package cn.shiroblue.core;
 
+import cn.shiroblue.modules.Render;
+import cn.shiroblue.modules.RouteMatcher;
 
 /**
  * Description:
- * <p>
  * ======================
  * by WhiteBlue
- * on 15/10/30
+ * on 15/11/8
  */
-public class ExceptionMatcherFactory {
+public class ExceptionMapperFactory {
 
     private static ExceptionMapper exceptionMapper = null;
 
-    private ExceptionMatcherFactory() {
+    private ExceptionMapperFactory() {
     }
 
     public static ExceptionMapper get() {

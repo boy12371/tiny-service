@@ -1,5 +1,9 @@
-package cn.shiroblue.route;
+package cn.shiroblue.modules;
 
+
+import cn.shiroblue.route.HttpMethod;
+import cn.shiroblue.route.RouteEntry;
+import cn.shiroblue.route.RouteMatch;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,14 +43,13 @@ public class RouteMatcher {
 
         for (RouteEntry entry : this.routes) {
             if (entry.matches(httpMethod, url)) {
-                RouteMatch routeMatch = new RouteMatch(entry.httpMethod, entry.matchPath, url, entry.route);
+                RouteMatch routeMatch = new RouteMatch(entry.httpMethod, entry.matchPath, url, entry.route, entry.render);
                 matchSet.add(routeMatch);
             }
         }
 
         return matchSet;
     }
-
 
     /**
      * 添加路由组件

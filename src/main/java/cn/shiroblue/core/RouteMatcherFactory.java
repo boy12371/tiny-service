@@ -1,17 +1,18 @@
 package cn.shiroblue.core;
 
-import cn.shiroblue.route.RouteMatcher;
+import cn.shiroblue.modules.RouteMatcher;
 
 /**
  * Description:
- * 单例RouteMather创建
+ * <p>
  * ======================
  * by WhiteBlue
- * on 15/10/30
+ * on 15/11/8
  */
 public class RouteMatcherFactory {
 
     private static RouteMatcher routeMatcher = null;
+
 
     private RouteMatcherFactory() {
     }

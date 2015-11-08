@@ -1,6 +1,6 @@
 package cn.shiroblue.core;
 
-import cn.shiroblue.ExceptionHandlerImpl;
+import cn.shiroblue.modules.ExceptionHandlerImpl;
 
 import java.util.HashMap;
 import java.util.Map;

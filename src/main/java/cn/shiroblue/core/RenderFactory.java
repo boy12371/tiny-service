@@ -1,13 +1,14 @@
 package cn.shiroblue.core;
 
-import cn.shiroblue.StringRender;
+import cn.shiroblue.modules.DefaultRender;
+import cn.shiroblue.modules.Render;
 
 /**
  * Description:
  * <p>
  * ======================
  * by WhiteBlue
- * on 15/10/30
+ * on 15/11/8
  */
 public class RenderFactory {
     private static Render render = null;
@@ -17,18 +18,13 @@ public class RenderFactory {
 
     public static Render get() {
         if (render == null) {
-            render = new StringRender();
+            render = new DefaultRender();
         }
         return render;
     }
 
-    /**
-     * 设置新render
-     *
-     * @param responseTransformer Render impl
-     */
-    public static void setRender(Render responseTransformer) {
-        render = responseTransformer;
+    public static void setDefaultRender(Render newRender) {
+        render = newRender;
     }
 
 }

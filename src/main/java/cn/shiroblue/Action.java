@@ -1,5 +1,7 @@
 package cn.shiroblue;
 
+import cn.shiroblue.http.HaltException;
+
 /**
  * Description:
  * <p>
