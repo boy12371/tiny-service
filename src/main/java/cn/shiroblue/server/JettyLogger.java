@@ -1,6 +1,7 @@
 package cn.shiroblue.server;
 
 import org.eclipse.jetty.util.log.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Description:
@@ -10,10 +11,10 @@ import org.eclipse.jetty.util.log.Logger;
  * on 15/11/8
  */
 public class JettyLogger implements Logger {
-    private org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
+    private static org.slf4j.Logger LOG = LoggerFactory.getLogger(JettyLogger.class);
 
     public void debug(String msg, Throwable th) {
-        logger.debug(msg, th);
+        LOG.debug(msg, th);
     }
 
     public Logger getLogger(String arg) {
@@ -22,17 +23,17 @@ public class JettyLogger implements Logger {
 
     @Override
     public boolean isDebugEnabled() {
-        return logger.isDebugEnabled();
+        return LOG.isDebugEnabled();
     }
 
     @Override
     public void warn(String msg, Throwable th) {
-        logger.warn(msg, th);
+        LOG.warn(msg, th);
     }
 
     @Override
     public void debug(Throwable thrown) {
-        logger.debug("", thrown);
+        LOG.debug("", thrown);
 
     }
 
@@ -43,7 +44,7 @@ public class JettyLogger implements Logger {
             log.append(", ");
             log.append(arg);
         }
-        logger.debug(log.toString());
+        LOG.debug(log.toString());
     }
 
     @Override
@@ -58,7 +59,7 @@ public class JettyLogger implements Logger {
 
     @Override
     public void info(Throwable thrown) {
-        logger.info("", thrown);
+        LOG.info("", thrown);
     }
 
     @Override
@@ -68,12 +69,12 @@ public class JettyLogger implements Logger {
             log.append(", ");
             log.append(arg);
         }
-        logger.info(log.toString());
+        LOG.info(log.toString());
     }
 
     @Override
     public void info(String msg, Throwable thrown) {
-        logger.info(msg, thrown);
+        LOG.info(msg, thrown);
     }
 
     @Override
@@ -83,7 +84,7 @@ public class JettyLogger implements Logger {
 
     @Override
     public void warn(Throwable thrown) {
-        logger.warn("", thrown);
+        LOG.warn("", thrown);
     }
 
     @Override
@@ -93,12 +94,12 @@ public class JettyLogger implements Logger {
             log.append(", ");
             log.append(arg);
         }
-        logger.warn(log.toString());
+        LOG.warn(log.toString());
     }
 
     @Override
     public void debug(String arg0, long arg1) {
-        logger.debug(arg0, arg1);
+        LOG.debug(arg0, arg1);
     }
 
 }

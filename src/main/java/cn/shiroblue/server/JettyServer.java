@@ -8,7 +8,6 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -19,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * on 15/11/8
  */
 public class JettyServer {
-    private static final Logger LOG = LoggerFactory.getLogger(JettyServer.class);
+    private static Logger LOG = LoggerFactory.getLogger(JettyServer.class);
 
     //默认端口
     private static final int DEFAULT_PORT = 8080;
@@ -44,6 +43,9 @@ public class JettyServer {
      * @param threadIdleTimeoutMillis thread timeout
      */
     public void start(String host, int port, int maxThreads, int minThreads, int threadIdleTimeoutMillis) {
+        //Jetty日志重定向
+        System.setProperty("org.mortbay.log.class", "cn.shiroblue.server.JettyLogger");
+
         server = new Server(new QueuedThreadPool(minThreads, maxThreads, threadIdleTimeoutMillis));
 
         ServerConnector connector = getConnector(server, host, port);

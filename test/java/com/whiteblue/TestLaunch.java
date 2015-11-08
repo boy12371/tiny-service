@@ -24,6 +24,12 @@ public class TestLaunch {
             }
         });
 
+        Route.get("/test", new HandlerRoute() {
+            @Override
+            public Object handle(Request request, Response response) throws Exception {
+                return "hello also";
+            }
+        });
 
         Tiny.server();
 
