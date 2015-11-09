@@ -26,7 +26,7 @@ public class Request {
 
     private Map<String, String> params;
 
-    private HttpServletRequest servletRequest;
+    public HttpServletRequest servletRequest;
 
     /* Lazy loaded stuff */
     private String body = null;

@@ -1,11 +1,11 @@
 package com.whiteblue;
 
 import cn.shiroblue.Catch;
-import cn.shiroblue.modules.ExceptionHandler;
 import cn.shiroblue.Route;
 import cn.shiroblue.TinyApplication;
 import cn.shiroblue.http.Request;
 import cn.shiroblue.http.Response;
+import cn.shiroblue.modules.ExceptionHandler;
 import cn.shiroblue.route.HandlerRoute;
 
 import javax.xml.bind.ValidationException;
@@ -27,10 +27,11 @@ public class TestApp implements TinyApplication {
             }
         });
 
-        Route.get("/test", new HandlerRoute() {
+        Route.post("/test", new HandlerRoute() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
-                throw new ValidationException("dsad");
+                String name = request.queryParam("name");
+                return "名字:" + name;
             }
         });
 
@@ -40,8 +41,6 @@ public class TestApp implements TinyApplication {
                 response.body("been catched");
             }
         });
-
-
     }
 
     @Override

@@ -43,8 +43,6 @@ public class JettyServer {
      * @param threadIdleTimeoutMillis thread timeout
      */
     public void start(String host, int port, int maxThreads, int minThreads, int threadIdleTimeoutMillis) {
-        //Jetty日志重定向
-        System.setProperty("org.mortbay.log.class", "cn.shiroblue.server.JettyLogger");
 
         server = new Server(new QueuedThreadPool(minThreads, maxThreads, threadIdleTimeoutMillis));
 

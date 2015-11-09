@@ -4,6 +4,7 @@ import cn.shiroblue.Route;
 import cn.shiroblue.Tiny;
 import cn.shiroblue.http.Request;
 import cn.shiroblue.http.Response;
+import cn.shiroblue.route.FilterRoute;
 import cn.shiroblue.route.HandlerRoute;
 
 /**
@@ -24,14 +25,7 @@ public class TestLaunch {
             }
         });
 
-        Route.get("/test", new HandlerRoute() {
-            @Override
-            public Object handle(Request request, Response response) throws Exception {
-                return "hello also";
-            }
-        });
-
-        Tiny.server();
+        Tiny.server("localhost", 8000);
 
     }
 

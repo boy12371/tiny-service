@@ -34,7 +34,6 @@ public class JettyLogger implements Logger {
     @Override
     public void debug(Throwable thrown) {
         LOG.debug("", thrown);
-
     }
 
     @Override
@@ -49,7 +48,7 @@ public class JettyLogger implements Logger {
 
     @Override
     public String getName() {
-        return "Spark Jetty Logger";
+        return "Tiny Jetty Logger";
     }
 
     @Override
