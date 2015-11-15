@@ -8,6 +8,8 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Map;
 
 /**
  * Description:
@@ -31,7 +33,6 @@ public class TinyFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         this.tinyApplication = getApplication(filterConfig);
         this.tinyHandler = new TinyHandler(true);
-
         this.tinyApplication.init();
     }
 
