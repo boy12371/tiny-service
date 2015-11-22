@@ -65,4 +65,10 @@ public class RouteMatcher {
     }
 
 
+    public void putRouteEntry(HttpMethod httpMethod, String url, Object target, Render render) {
+        RouteEntry routeEntry = new RouteEntry(httpMethod, url, target, render);
+        this.routes.add(routeEntry);
+    }
+
+
 }

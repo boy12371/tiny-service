@@ -1,6 +1,6 @@
 package cn.shiroblue.utils;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,13 +20,13 @@ public class UrlUtils {
      */
     public static List<String> convertRouteToList(String route) {
         String[] pathArray = route.split("/");
-        List<String> path = new ArrayList<>();
-        for (String p : pathArray) {
-            if (p.length() > 0) {
-                path.add(p);
-            }
-        }
-        return path;
+//        List<String> path = new ArrayList<>();
+//        for (String p : pathArray) {
+//            if (p.length() > 0) {
+//                path.add(p);
+//            }
+//        }
+        return Arrays.asList(pathArray);
     }
 
 

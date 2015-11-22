@@ -35,6 +35,7 @@ public class TinyHandler {
 
     private static final String HTTP_METHOD_OVERRIDE_HEADER = "X-HTTP-Method-Override";
     private static final String INTERNAL_ERROR = "<html><body><h2>500 Internal Error</h2></body></html>";
+    private static final String NOT_FOUND_ERROR = "<html><body><h2>404 Not Found</h2></body></html>";
 
     private RouteMatcher routeMatcher;
     private ExceptionMapper exceptionMapper;
@@ -50,7 +51,7 @@ public class TinyHandler {
     }
 
 
-    public boolean handle(HttpServletRequest httpRequest, HttpServletResponse httpResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void handle(HttpServletRequest httpRequest, HttpServletResponse httpResponse, FilterChain filterChain) throws IOException, ServletException {
         //支持REST方法
         String method = httpRequest.getHeader(HTTP_METHOD_OVERRIDE_HEADER);
         if (method == null) {
@@ -77,49 +78,31 @@ public class TinyHandler {
             //search match FilterRoute and do handle
             for (RouteMatch routeMatch : listRoute) {
                 if ((routeMatch.getTarget() instanceof FilterRoute) && (routeMatch.getHttpMethod() == HttpMethod.before)) {
-                    LOG.debug("Action : [actionType: Filter , url: " + routeMatch.getMatchPath() + "] ");
 
                     request.bind(routeMatch);
 
                     ((FilterRoute) routeMatch.getTarget()).handle(request, responseWrapper);
+                    break;
                 }
             }
 
-            RouteMatch match = null;
-
-            //search match HandlerRoute
             for (RouteMatch routeMatch : listRoute) {
                 if (routeMatch.getTarget() instanceof HandlerRoute) {
-                    match = routeMatch;
-                }
-            }
+                    request.bind(routeMatch);
+                    Object element = ((HandlerRoute) routeMatch.getTarget()).handle(request, responseWrapper);
 
-            //do handle
-            if (match != null) {
-                LOG.debug("Action : [actionType: Handler , url: " + match.getMatchPath() + "] ");
-
-                request.bind(match);
-                Object element = ((HandlerRoute) match.getTarget()).handle(request, responseWrapper);
-
-                String result;
-
-                //render handle..
-                if (match.getRender() != null) {
-                    result = match.getRender().rend(element);
-                } else {
-                    result = this.defaultRender.rend(element);
-                }
-
-                if (result != null) {
-                    bodyContent = result;
+                    if (routeMatch.getRender() != null) {
+                        bodyContent = routeMatch.getRender().rend(element);
+                    } else {
+                        bodyContent = this.defaultRender.rend(element);
+                    }
+                    break;
                 }
             }
 
             //search match FilterRoute and do handle(after)
             for (RouteMatch routeMatch : listRoute) {
                 if ((routeMatch.getTarget() instanceof FilterRoute) && (routeMatch.getHttpMethod() == HttpMethod.after)) {
-
-                    LOG.debug("Action : [actionType: Filter , url: " + routeMatch.getMatchPath() + "] ");
 
                     request.bind(routeMatch);
                     ((FilterRoute) routeMatch.getTarget()).handle(request, responseWrapper);
@@ -128,6 +111,7 @@ public class TinyHandler {
                     if (bodyAfterFilter != null) {
                         bodyContent = bodyAfterFilter;
                     }
+                    break;
                 }
             }
 
@@ -158,27 +142,24 @@ public class TinyHandler {
             }
         }
 
-        //consumed flag
-        boolean consumed = bodyContent != null;
 
-        if (consumed) {
-            //写入body content
-            if (!httpResponse.isCommitted()) {
-                //默认content-type
-                if (httpResponse.getContentType() == null) {
-                    httpResponse.setContentType("text/html; charset=utf-8");
-                }
-                PrintWriter printWriter = httpResponse.getWriter();
-
-                printWriter.write(bodyContent.toString());
-
-                printWriter.flush();
-            }
-        } else if (filterChain != null) {
-            filterChain.doFilter(httpRequest, httpResponse);
+        if (bodyContent == null) {
+            httpResponse.setStatus(404);
+            bodyContent = NOT_FOUND_ERROR;
         }
 
-        return consumed;
+        //写入body content
+        if (!httpResponse.isCommitted()) {
+            //默认content-type
+            if (httpResponse.getContentType() == null) {
+                httpResponse.setContentType("text/html; charset=utf-8");
+            }
+            PrintWriter printWriter = httpResponse.getWriter();
+
+            printWriter.write(bodyContent.toString());
+
+            printWriter.flush();
+        }
     }
 
 
