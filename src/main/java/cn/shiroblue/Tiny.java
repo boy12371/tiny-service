@@ -25,4 +25,5 @@ public class Tiny {
     public static void server(String host, int port, int maxThreads, int minThreads, int threadTimeoutMillis) {
         JettyServerFactory.newInstance(host, port, maxThreads, minThreads, threadTimeoutMillis);
     }
+
 }

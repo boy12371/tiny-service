@@ -25,10 +25,7 @@ public class JettyHandler extends SessionHandler {
 
     @Override
     public void doHandle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
-        tinyHandler.handle(request, response, null);
-
+        tinyHandler.handle(request, response);
         baseRequest.setHandled(true);
-
     }
 }

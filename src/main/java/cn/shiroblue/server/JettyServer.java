@@ -8,6 +8,7 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.Servlet;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -26,7 +27,6 @@ public class JettyServer {
     private static Server server = null;
 
     private Handler handler;
-
 
     public JettyServer(Handler handler) {
         this.handler = handler;

@@ -16,7 +16,7 @@ public class JettyServerFactory {
 
     private static int DEFAULT_MIN_THREAD = 8;
     private static int DEFAULT_MAX_THREAD = 200;
-    private static int DEFAULT_THREAD_TIMEOUT = 60000;
+    private static int DEFAULT_THREAD_TIMEOUT = 30000;
 
     public static void newInstance() {
         newInstance(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_MAX_THREAD, DEFAULT_MIN_THREAD, DEFAULT_THREAD_TIMEOUT);
@@ -31,7 +31,7 @@ public class JettyServerFactory {
     }
 
     public static void newInstance(String host, int port, int maxThreads, int minThreads, int threadTimeoutMillis) {
-        TinyHandler tinyHandler = new TinyHandler(false);
+        TinyHandler tinyHandler = new TinyHandler();
         JettyHandler jettyHandler = new JettyHandler(tinyHandler);
         JettyServer jettyServer = new JettyServer(jettyHandler);
         jettyServer.start(host, port, maxThreads, minThreads, threadTimeoutMillis);

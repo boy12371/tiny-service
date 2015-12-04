@@ -8,8 +8,6 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Map;
 
 /**
  * Description:
@@ -32,13 +30,13 @@ public class TinyFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         this.tinyApplication = getApplication(filterConfig);
-        this.tinyHandler = new TinyHandler(true);
+        this.tinyHandler = new TinyHandler();
         this.tinyApplication.init();
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        this.handle(servletRequest, servletResponse, filterChain);
+        this.handle(servletRequest, servletResponse);
     }
 
     @Override
@@ -51,7 +49,7 @@ public class TinyFilter implements Filter {
         try {
             String applicationClassName = filterConfig.getInitParameter(APPLICATION_CLASS_PARAM);
 
-            LOG.debug("Server : launch a Srever with {} ", applicationClassName);
+            LOG.info("Server : launch a Srever with {} ", applicationClassName);
 
             Class<?> applicationClass = Class.forName(applicationClassName);
             return (TinyApplication) applicationClass.newInstance();
@@ -61,11 +59,11 @@ public class TinyFilter implements Filter {
     }
 
 
-    private void handle(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    private void handle(ServletRequest servletRequest, ServletResponse servletResponse) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 
-        tinyHandler.handle(httpRequest, httpResponse, filterChain);
+        tinyHandler.handle(httpRequest, httpResponse);
     }
 
 
