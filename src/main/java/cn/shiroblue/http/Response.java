@@ -71,41 +71,6 @@ public class Response {
         return response;
     }
 
-    /**
-     * 发送重定向
-     *
-     * @param location Where to redirect
-     */
-    public void redirect(String location) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Redirecting (" + HttpServletResponse.SC_FOUND + " to {}" + location);
-        }
-        try {
-            response.sendRedirect(location);
-        } catch (IOException ioException) {
-            LOG.warn("Redirect failure", ioException);
-        }
-    }
-
-    /**
-     * 发送重定向(带状态码)
-     *
-     * @param location       Where to redirect permanently
-     * @param httpStatusCode the http status code
-     */
-    public void redirect(String location, int httpStatusCode) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Redirecting (" + httpStatusCode + " to " + location);
-        }
-        response.setStatus(httpStatusCode);
-        response.setHeader("Location", location);
-        response.setHeader("Connection", "close");
-        try {
-            response.sendError(httpStatusCode);
-        } catch (IOException e) {
-            LOG.warn("Exception when trying to redirect permanently", e);
-        }
-    }
 
     /**
      * 设置header

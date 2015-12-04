@@ -13,8 +13,6 @@ public class ResponseWrapper extends Response {
 
     private Response delegate;
 
-    private boolean redirected = false;
-
 
     public ResponseWrapper(Response response) {
         this.delegate = response;
@@ -58,24 +56,6 @@ public class ResponseWrapper extends Response {
         return delegate.raw();
     }
 
-    @Override
-    public void redirect(String location) {
-        redirected = true;
-        delegate.redirect(location);
-    }
-
-    @Override
-    public void redirect(String location, int httpStatusCode) {
-        redirected = true;
-        delegate.redirect(location, httpStatusCode);
-    }
-
-    /**
-     * @return true if redirected has been done
-     */
-    boolean isRedirected() {
-        return redirected;
-    }
 
     @Override
     public void header(String header, String value) {
