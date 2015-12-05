@@ -1,6 +1,6 @@
 package cn.shiroblue.modules;
 
-import cn.shiroblue.modules.Render;
+import cn.shiroblue.http.Response;
 
 /**
  * Description:
@@ -11,7 +11,7 @@ import cn.shiroblue.modules.Render;
  */
 public class DefaultRender implements Render {
     @Override
-    public String rend(Object model) throws Exception {
-        return model.toString();
+    public void rend(Response response, Object model) throws Exception {
+        response.body(model.toString());
     }
 }

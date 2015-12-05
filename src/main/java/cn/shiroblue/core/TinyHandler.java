@@ -41,7 +41,6 @@ public class TinyHandler {
         this.defaultRender = RenderFactory.get();
     }
 
-
     public void handle(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException, ServletException {
         boolean handled = false;
 
@@ -52,8 +51,6 @@ public class TinyHandler {
 
         HttpMethod httpMethod = HttpMethod.valueOf(method.toUpperCase());
         String url = UrlUtils.pathFormat(httpRequest.getRequestURI());
-
-        Object bodyContent = null;
 
         List<RouteMatch> listRoute = this.routeMatcher.findMatchRote(httpMethod, url);
 
@@ -75,9 +72,9 @@ public class TinyHandler {
                     Object element = ((HandlerRoute) routeMatch.getTarget()).handle(request, response);
 
                     if (routeMatch.getRender() != null) {
-                        bodyContent = routeMatch.getRender().rend(element);
+                        routeMatch.getRender().rend(response, element);
                     } else {
-                        bodyContent = this.defaultRender.rend(element);
+                        this.defaultRender.rend(response, element);
                     }
                     handled = true;
                 }
@@ -88,17 +85,11 @@ public class TinyHandler {
                 if (routeMatch.getHttpMethod() == HttpMethod.after) {
                     request.bind(routeMatch);
                     ((FilterRoute) routeMatch.getTarget()).handle(request, response);
-
-                    String bodyAfterFilter = response.body();
-                    if (bodyAfterFilter != null) {
-                        bodyContent = bodyAfterFilter;
-                    }
                 }
             }
 
         } catch (HaltException hEx) {
             httpResponse.setStatus(hEx.getStatusCode());
-            bodyContent = hEx.getBody();
             handled = true;
         } catch (Exception e) {
             //异常拦截处理
@@ -106,21 +97,17 @@ public class TinyHandler {
             if (handler != null) {
                 request.clearParam();
                 handler.handle(e, request, response);
-                String bodyAfterHandler = response.body();
-                if (bodyAfterHandler != null) {
-                    bodyContent = bodyAfterHandler;
-                }
                 handled = true;
             } else {
                 e.printStackTrace();
                 httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                bodyContent = INTERNAL_ERROR;
+                response.body(INTERNAL_ERROR);
             }
         }
 
         if (!handled) {
             httpResponse.setStatus(404);
-            bodyContent = NOT_FOUND_ERROR;
+            response.body(NOT_FOUND_ERROR);
         }
 
         //写入body content
@@ -129,10 +116,10 @@ public class TinyHandler {
             if (httpResponse.getContentType() == null) {
                 httpResponse.setContentType("text/html; charset=utf-8");
             }
-
+            String bodyContent = response.body();
             if (bodyContent != null) {
                 PrintWriter printWriter = httpResponse.getWriter();
-                printWriter.write(bodyContent.toString());
+                printWriter.write(bodyContent);
                 printWriter.flush();
                 printWriter.close();
             }

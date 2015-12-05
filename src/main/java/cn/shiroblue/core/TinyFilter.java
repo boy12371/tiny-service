@@ -26,12 +26,11 @@ public class TinyFilter implements Filter {
 
     private TinyHandler tinyHandler;
 
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         this.tinyApplication = getApplication(filterConfig);
-        this.tinyHandler = new TinyHandler();
         this.tinyApplication.init();
+        this.tinyHandler = new TinyHandler();
     }
 
     @Override

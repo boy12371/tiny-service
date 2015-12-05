@@ -1,5 +1,7 @@
 package cn.shiroblue.modules;
 
+import cn.shiroblue.http.Response;
+
 /**
  * Description:
  * <p>
@@ -10,6 +12,6 @@ package cn.shiroblue.modules;
 public interface Render {
 
 
-    String rend(Object model) throws Exception;
+    void rend(Response response, Object model) throws Exception;
 
 }
