@@ -5,16 +5,9 @@ import cn.shiroblue.modules.ExceptionHandlerImpl;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Description:
- * <p>
- * ======================
- * by WhiteBlue
- * on 15/10/30
- */
 public class ExceptionMapper {
 
-    //异常处理映射
+    //the match map
     private Map<Class<? extends Exception>, ExceptionHandlerImpl> exceptionMap;
 
     public ExceptionMapper() {
@@ -22,7 +15,7 @@ public class ExceptionMapper {
     }
 
     /**
-     * 添加错误处理映射
+     * add a new map link an Exception
      *
      * @param exceptionClass exceptionClass
      * @param handler        ExceptionHandlerImpl
@@ -46,7 +39,6 @@ public class ExceptionMapper {
                 superclass = superclass.getSuperclass();
             }
 
-            //若不包含则加空值
             this.exceptionMap.put(exceptionClass, null);
             return null;
         }

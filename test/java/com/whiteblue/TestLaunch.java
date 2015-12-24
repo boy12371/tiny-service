@@ -24,7 +24,7 @@ public class TestLaunch {
         Route.get("/", new HandlerRoute() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
-                response.type("application/json");
+                response.contentType("application/json");
 
                 Map<String, String> map = new HashMap<>();
                 map.put("code", "success");

@@ -68,8 +68,8 @@ public class ResponseWrapper extends Response {
     }
 
     @Override
-    public void type(String contentType) {
-        delegate.type(contentType);
+    public void contentType(String contentType) {
+        delegate.contentType(contentType);
     }
 
 }

@@ -1,6 +1,6 @@
 package cn.shiroblue.core;
 
-import cn.shiroblue.http.HaltException;
+import cn.shiroblue.exceptions.HaltException;
 import cn.shiroblue.http.Request;
 import cn.shiroblue.http.Response;
 import cn.shiroblue.modules.ExceptionHandlerImpl;
@@ -19,13 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-/**
- * Description:
- * <p>
- * ======================
- * by WhiteBlue
- * on 15/11/8
- */
+//the http core handler
 public class TinyHandler {
     private static final String HTTP_METHOD_OVERRIDE_HEADER = "X-HTTP-Method-Override";
     private static final String INTERNAL_ERROR = "<html><body><h2>500 Internal Error</h2></body></html>";
@@ -92,7 +86,7 @@ public class TinyHandler {
             httpResponse.setStatus(hEx.getStatusCode());
             handled = true;
         } catch (Exception e) {
-            //异常拦截处理
+            //Exception handle
             ExceptionHandlerImpl handler = this.exceptionMapper.getHandler(e);
             if (handler != null) {
                 request.clearParam();
@@ -110,9 +104,9 @@ public class TinyHandler {
             response.body(NOT_FOUND_ERROR);
         }
 
-        //写入body content
+        //write body content
         if (!httpResponse.isCommitted()) {
-            //默认content-type
+            //default content-type
             if (httpResponse.getContentType() == null) {
                 httpResponse.setContentType("text/html; charset=utf-8");
             }

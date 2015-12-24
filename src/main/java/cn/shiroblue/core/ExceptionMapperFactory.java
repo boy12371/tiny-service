@@ -3,12 +3,7 @@ package cn.shiroblue.core;
 import cn.shiroblue.modules.Render;
 import cn.shiroblue.modules.RouteMatcher;
 
-/**
- * Description:
- * ======================
- * by WhiteBlue
- * on 15/11/8
- */
+
 public class ExceptionMapperFactory {
 
     private static ExceptionMapper exceptionMapper = null;

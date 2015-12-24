@@ -6,13 +6,7 @@ import cn.shiroblue.route.FilterRoute;
 import cn.shiroblue.route.HandlerRoute;
 import cn.shiroblue.route.HttpMethod;
 
-/**
- * Description:
- * 路由注入
- * ======================
- * by WhiteBlue
- * on 15/10/30
- */
+
 public class Route {
 
     private Route() {

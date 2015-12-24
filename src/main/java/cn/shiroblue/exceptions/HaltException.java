@@ -1,14 +1,8 @@
-package cn.shiroblue.http;
+package cn.shiroblue.exceptions;
 
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Description:
- * 用于通知停止处理
- * ======================
- * by WhiteBlue
- * on 15/10/30
- */
+//throw this make the handler stop
 public class HaltException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 

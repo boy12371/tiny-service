@@ -1,12 +1,6 @@
 package cn.shiroblue;
 
-/**
- * Description:
- * <p>
- * ======================
- * by WhiteBlue
- * on 15/10/29
- */
+//the servlet init impl
 public interface TinyApplication {
     void init();
 

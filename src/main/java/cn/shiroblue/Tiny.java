@@ -2,15 +2,10 @@ package cn.shiroblue;
 
 import cn.shiroblue.server.JettyServerFactory;
 
-/**
- * Description:
- * <p>
- * ======================
- * by WhiteBlue
- * on 15/11/8
- */
+
 public class Tiny {
 
+    //hidden constructor
     private Tiny() {
     }
 

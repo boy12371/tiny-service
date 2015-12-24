@@ -1,14 +1,8 @@
 package cn.shiroblue;
 
-import cn.shiroblue.http.HaltException;
+import cn.shiroblue.exceptions.HaltException;
 
-/**
- * Description:
- * <p>
- * ======================
- * by WhiteBlue
- * on 15/11/5
- */
+
 public class Action {
 
     private Action() {

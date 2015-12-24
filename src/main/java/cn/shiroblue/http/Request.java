@@ -11,13 +11,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.*;
 
-/**
- * Description:
- * 从Spark抄来的Request封装
- * ======================
- * by WhiteBlue
- * on 15/10/29
- */
 public class Request {
 
     private static final Logger LOG = LoggerFactory.getLogger(Request.class);
@@ -28,7 +21,7 @@ public class Request {
 
     public HttpServletRequest servletRequest;
 
-    /* Lazy loaded stuff */
+    // Lazy loaded stuff
     private String body = null;
     private byte[] bodyAsBytes = null;
 
@@ -45,27 +38,24 @@ public class Request {
 
     private static Map<String, String> getParams(List<String> request, List<String> matched) {
         Map<String, String> params = new HashMap<>();
-
         for (int i = 0; (i < request.size()) && (i < matched.size()); i++) {
             String matchedPart = matched.get(i);
             if (TinyUtils.isParam(matchedPart)) {
                 params.put(matchedPart.toLowerCase(), request.get(i));
             }
         }
-        //can't edit
         return params;
     }
 
     /**
-     * 更改匹配路径
+     * math the request to an route
      *
      * @param match RouteMatch
      */
     private void changeMatch(RouteMatch match) {
-        //接受路径和匹配路径转为数组
+        //match and get the url param
         List<String> requestList = UrlUtils.convertRouteToList(match.getUrl());
         List<String> matchedList = UrlUtils.convertRouteToList(match.getMatchPath());
-
         params = getParams(requestList, matchedList);
     }
 
@@ -76,7 +66,7 @@ public class Request {
     }
 
     /**
-     * 得到路径参数的Map
+     * return url params
      *
      * @return a map containing all route params
      */
@@ -84,9 +74,9 @@ public class Request {
         return Collections.unmodifiableMap(params);
     }
 
+
     /**
-     * 取得路径参数(空返回null)
-     * Example: parameter 'name' from the following pattern: (get '/hello/:name')
+     * get url param
      *
      * @param param the param
      * @return null if the given param is null or not found
@@ -100,7 +90,7 @@ public class Request {
     }
 
     /**
-     * 请求方法
+     * return the http method
      *
      * @return request method e.g. GET, POST, PUT, ...
      */
@@ -129,12 +119,6 @@ public class Request {
         return servletRequest.getHeader(USER_AGENT);
     }
 
-    /**
-     * @return the server port
-     */
-    public int port() {
-        return servletRequest.getServerPort();
-    }
 
     /**
      * @return the path info
@@ -211,26 +195,27 @@ public class Request {
     }
 
     /**
-     * @return 请求本体length
+     * return the content-length
+     *
+     * @return int
      */
     public int contentLength() {
         return servletRequest.getContentLength();
     }
 
     /**
-     * 请求参数
+     * return a query param
      *
      * @param queryParam the query parameter
      * @return the value of the provided queryParam
-     * Example: query parameter 'id' from the following request URI: /hello?id=foo
      */
     public String queryParam(String queryParam) {
         return servletRequest.getParameter(queryParam);
     }
 
+
     /**
-     * 得到某一相同参数的所有值
-     * Example: query parameter 'id' from the following request URI: /hello?id=foo&id=bar
+     * get all queryparam which key is same
      *
      * @param queryParam the query parameter
      * @return the values of the provided queryParam, null if it doesn't exists
@@ -240,26 +225,18 @@ public class Request {
     }
 
     /**
-     * 取得header值
+     * get header value
      *
-     * @param header the header
+     * @param key the header
      * @return the value of the provided header
      */
-    public String headers(String header) {
-        return servletRequest.getHeader(header);
+    public String header(String key) {
+        return servletRequest.getHeader(key);
     }
 
-    /**
-     * 得到所有http参数键值
-     *
-     * @return all query parameters
-     */
-    public Set<String> queryParams() {
-        return servletRequest.getParameterMap().keySet();
-    }
 
     /**
-     * 返回所有header名
+     * get all headers
      *
      * @return all headers
      */
@@ -291,28 +268,6 @@ public class Request {
         servletRequest.setAttribute(attribute, value);
     }
 
-    /**
-     * Gets the value of the provided attribute
-     *
-     * @param attribute The attribute value or null if not present
-     * @param <T>       the type parameter.
-     * @return the value for the provided attribute
-     */
-    public <T> T attribute(String attribute) {
-        return (T) servletRequest.getAttribute(attribute);
-    }
-
-    /**
-     * @return all attributes
-     */
-    public Set<String> attributes() {
-        Set<String> attrList = new HashSet<String>();
-        Enumeration<String> attributes = (Enumeration<String>) servletRequest.getAttributeNames();
-        while (attributes.hasMoreElements()) {
-            attrList.add(attributes.nextElement());
-        }
-        return attrList;
-    }
 
     /**
      * @return the raw HttpServletRequest object handed in by Jetty
@@ -329,20 +284,12 @@ public class Request {
         return servletRequest.getRequestURI();
     }
 
-    /**
-     * @return Returns the name and version of the protocol the request uses
-     */
-    public String protocol() {
-        return servletRequest.getProtocol();
-    }
-
 
     public void clearParam() {
         if (this.params != null) {
             this.params.clear();
         }
     }
-
 
 }
 

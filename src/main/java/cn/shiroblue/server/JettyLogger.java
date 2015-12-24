@@ -3,13 +3,7 @@ package cn.shiroblue.server;
 import org.eclipse.jetty.util.log.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Description:
- * <p>
- * ======================
- * by WhiteBlue
- * on 15/11/8
- */
+
 public class JettyLogger implements Logger {
     private static org.slf4j.Logger LOG = LoggerFactory.getLogger(JettyLogger.class);
 

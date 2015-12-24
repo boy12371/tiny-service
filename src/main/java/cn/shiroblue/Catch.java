@@ -6,13 +6,7 @@ import cn.shiroblue.http.Response;
 import cn.shiroblue.modules.ExceptionHandler;
 import cn.shiroblue.modules.ExceptionHandlerImpl;
 
-/**
- * Description:
- * <p>
- * ======================
- * by WhiteBlue
- * on 15/11/6
- */
+
 public class Catch {
 
     private Catch() {

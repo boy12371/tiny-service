@@ -10,13 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Description:
- * <p>
- * ======================
- * by WhiteBlue
- * on 15/10/29
- */
 public class RouteMatcher {
     private Set<RouteEntry> routes;
 
@@ -25,50 +18,53 @@ public class RouteMatcher {
     }
 
     /**
-     * 清空路由表
+     * clear the route map
      */
     public void clearRoutes() {
-        routes.clear();
+        this.routes.clear();
     }
 
     /**
-     * 寻找适配组件
+     * find the match objects
      *
-     * @param httpMethod 请求类型
-     * @param url        路径
+     * @param httpMethod method
+     * @param uri        uri
      * @return List
      */
-    public List<RouteMatch> findMatchRote(HttpMethod httpMethod, String url) {
+    public List<RouteMatch> findMatchRote(HttpMethod httpMethod, String uri) {
         List<RouteMatch> matchSet = new ArrayList<>();
-
         for (RouteEntry entry : this.routes) {
-            if (entry.matches(httpMethod, url)) {
-                RouteMatch routeMatch = new RouteMatch(entry.httpMethod, entry.matchPath, url, entry.route, entry.render);
+            if (entry.matches(httpMethod, uri)) {
+                RouteMatch routeMatch = new RouteMatch(entry.httpMethod, entry.matchPath, uri, entry.route, entry.render);
                 matchSet.add(routeMatch);
             }
         }
-
         return matchSet;
     }
 
     /**
-     * 添加路由组件
+     * put a new Route in map
      *
-     * @param httpMethod 请求类型
-     * @param url        路径
-     * @param target     映射对象
+     * @param httpMethod method
+     * @param uri        uri
+     * @param target     target
      */
-    public void putRouteEntry(HttpMethod httpMethod, String url, Object target) {
-        RouteEntry routeEntry = new RouteEntry(httpMethod, url, target);
-
+    public void putRouteEntry(HttpMethod httpMethod, String uri, Object target) {
+        RouteEntry routeEntry = new RouteEntry(httpMethod, uri, target);
         this.routes.add(routeEntry);
     }
 
 
+    /**
+     * put a new Route in map(with render)
+     *
+     * @param httpMethod method
+     * @param url        uri
+     * @param target     target
+     * @param render     to render this result
+     */
     public void putRouteEntry(HttpMethod httpMethod, String url, Object target, Render render) {
         RouteEntry routeEntry = new RouteEntry(httpMethod, url, target, render);
         this.routes.add(routeEntry);
     }
-
-
 }

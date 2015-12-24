@@ -2,10 +2,8 @@ package com.whiteblue;
 
 import cn.shiroblue.Route;
 import cn.shiroblue.TinyApplication;
-import cn.shiroblue.core.RenderFactory;
 import cn.shiroblue.http.Request;
 import cn.shiroblue.http.Response;
-import cn.shiroblue.modules.Render;
 import cn.shiroblue.route.HandlerRoute;
 
 import java.util.HashMap;
@@ -26,7 +24,7 @@ public class TestApp implements TinyApplication {
         Route.get("/", new HandlerRoute() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
-                response.type("application/json");
+                response.contentType("application/json");
 
                 Map<String, String> map = new HashMap<>();
                 map.put("code", "success");

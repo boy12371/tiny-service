@@ -5,50 +5,34 @@ import cn.shiroblue.utils.UrlUtils;
 
 import java.util.List;
 
-/**
- * Description:
- * <p>
- * ======================
- * by WhiteBlue
- * on 15/10/29
- */
 public class RouteEntry {
     public HttpMethod httpMethod;
 
-    //匹配路径
+    //match uri
     public String matchPath;
 
-    //目标Route对象
+    //target Object
     public Object route;
 
+    //bind render
     public Render render;
 
-    /**
-     * 构造函数(执行格式化)
-     *
-     * @param httpMethod httpMethod
-     * @param matchUrl   未处理url
-     * @param route      Route
-     */
     public RouteEntry(HttpMethod httpMethod, String matchUrl, Object route) {
         this.httpMethod = httpMethod;
-        //路径格式化
         this.matchPath = UrlUtils.pathFormat(matchUrl);
         this.route = route;
         this.render = null;
     }
 
-
     public RouteEntry(HttpMethod httpMethod, String matchUrl, Object route, Render render) {
         this.httpMethod = httpMethod;
-        //路径格式化
         this.matchPath = UrlUtils.pathFormat(matchUrl);
         this.route = route;
         this.render = render;
     }
 
     /**
-     * 路径匹配
+     * try match a url
      *
      * @param requestMethod request httpMethod
      * @param path          clean url
@@ -66,26 +50,19 @@ public class RouteEntry {
         return match;
     }
 
-    /**
-     * 路径组件匹配
-     *
-     * @param url 处理过的url(去掉slash)
-     * @return boolean
-     */
+
     private boolean matchPath(String url) {
-        //完全一致则返回
+        //absolutely math
         if (this.matchPath.equals(url)) {
             return true;
         }
-
-        //路径分割
+        //split
         List<String> thisPathList = UrlUtils.convertRouteToList(this.matchPath);
         List<String> pathList = UrlUtils.convertRouteToList(url);
 
         int thisPathSize = thisPathList.size();
         int pathSize = pathList.size();
-
-        //对称
+        //same size
         if (thisPathSize == pathSize) {
             for (int i = 0; i < thisPathSize; i++) {
                 //=>mathPath
@@ -102,9 +79,7 @@ public class RouteEntry {
                 }
             }
             return true;
-            //非对称
         } else {
-            //结尾为全匹配则逐个比对
             if (this.matchPath.endsWith("*")) {
                 if (thisPathSize < pathSize) {
                     for (int i = 0; i < thisPathSize; i++) {

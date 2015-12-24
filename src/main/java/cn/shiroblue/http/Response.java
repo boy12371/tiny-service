@@ -1,22 +1,9 @@
 package cn.shiroblue.http;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
-/**
- * Description:
- * <p>
- * ======================
- * by WhiteBlue
- * on 15/10/29
- */
 public class Response {
-    private static final Logger LOG = LoggerFactory.getLogger(Response.class);
-
     private HttpServletResponse response;
     private String body;
 
@@ -29,9 +16,9 @@ public class Response {
     }
 
     /**
-     * 设置http状态码
+     * set http code
      *
-     * @param statusCode 状态码
+     * @param statusCode code
      */
     public void status(int statusCode) {
         response.setStatus(statusCode);
@@ -42,21 +29,21 @@ public class Response {
      *
      * @param contentType content-type
      */
-    public void type(String contentType) {
+    public void contentType(String contentType) {
         response.setContentType(contentType);
     }
 
     /**
-     * 设置响应本体
+     * set response body(string)
      *
-     * @param body 本体
+     * @param body string
      */
     public void body(String body) {
         this.body = body;
     }
 
     /**
-     * 得到响应内容
+     * get the body
      *
      * @return the body
      */
@@ -73,13 +60,23 @@ public class Response {
 
 
     /**
-     * 设置header
+     * set a http header
      *
-     * @param header the header
-     * @param value  the value
+     * @param key   the header
+     * @param value the value
      */
-    public void header(String header, String value) {
-        response.addHeader(header, value);
+    public void header(String key, String value) {
+        response.addHeader(key, value);
+    }
+
+
+    /**
+     * get a http header
+     *
+     * @return String
+     */
+    public String header(String key) {
+        return response.getHeader(key);
     }
 
 }

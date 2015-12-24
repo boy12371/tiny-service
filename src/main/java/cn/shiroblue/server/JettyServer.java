@@ -8,20 +8,12 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.Servlet;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Description:
- * <p>
- * ======================
- * by WhiteBlue
- * on 15/11/8
- */
+
 public class JettyServer {
     private static Logger LOG = LoggerFactory.getLogger(JettyServer.class);
 
-    //默认端口
     private static final int DEFAULT_PORT = 8080;
 
     private static Server server = null;

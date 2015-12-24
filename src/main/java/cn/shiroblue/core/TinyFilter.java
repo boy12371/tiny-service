@@ -9,17 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Description:
- * <p>
- * ======================
- * by WhiteBlue
- * on 15/10/25
- */
 public class TinyFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(TinyFilter.class);
 
-    // web.xml 配置参数
+    // get the config in web.xml
     private static final String APPLICATION_CLASS_PARAM = "applicationClass";
 
     private TinyApplication tinyApplication;
@@ -48,7 +41,7 @@ public class TinyFilter implements Filter {
         try {
             String applicationClassName = filterConfig.getInitParameter(APPLICATION_CLASS_PARAM);
 
-            LOG.info("Server : launch a Srever with {} ", applicationClassName);
+            LOG.info("Server : launch with {} ", applicationClassName);
 
             Class<?> applicationClass = Class.forName(applicationClassName);
             return (TinyApplication) applicationClass.newInstance();
