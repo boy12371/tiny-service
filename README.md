@@ -1,7 +1,11 @@
 # TinyService
 ====
 
->Golang风格的Java RESTful框架，借鉴了[SparkJava](https://github.com/WhiteBlue/spark)
+>Golang风格的Java微型web框架
+
+* 支持Servlet规范或使用内嵌Jetty server
+* 用于构建简单REST API
+* 借鉴了[SparkJava](https://github.com/WhiteBlue/spark) , 相比原来精简了代码并省去了个人来讲不必要的JSP支持 , 并添加了Java 7支持
 
 ### Getting started
 
@@ -41,7 +45,7 @@ Then view at: http://localhost:8080
 
 ### WebServer
 
-* 启动内置服务器
+* launch with jetty
 
 
 ```
@@ -54,7 +58,7 @@ Tiny.server("localhost", 8080, 1000, 20, 2000);
 ```
 
 
-* 使用其他WebServer
+* launch with servlet
 
 ->web.xml
 
@@ -88,16 +92,14 @@ public class TestApp implements TinyApplication {
 ```
 
 ### Render
->TinyService默认无Render(打印str)，可以通过注册Render使用Template Engine或者JSONEncode
 
-* 使用Fastjson
+* return Json
 
 ```
-   RenderFactory.setDefaultRender(JSON::toJSONString);
-   
+	RenderFactory.setDefaultRender(new JsonRender());
 ```
 
-* 使用Gson
+* use Gson
 
 ```
      RenderFactory.setDefaultRender(new Render() {
