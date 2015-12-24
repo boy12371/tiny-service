@@ -5,7 +5,7 @@
 
 * 支持Servlet规范或使用内嵌Jetty server
 * 用于构建简单REST API
-* 借鉴了[SparkJava](https://github.com/WhiteBlue/spark) , 相比原来精简了代码并省去了个人来讲不必要的JSP支持 , 并添加了Java 7支持
+* 借鉴了[SparkJava](http://sparkjava.com) , 相比原来精简了代码并省去了个人来讲不必要的JSP支持 , 并添加了Java 7支持
 
 ### Getting started
 
