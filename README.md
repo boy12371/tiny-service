@@ -1,7 +1,7 @@
 # TinyService
 ====
 
->Golang风格的Java微型web框架
+> Golang风格的Java微型API框架
 
 * 支持Servlet规范或使用内嵌Jetty server
 * 用于构建简单REST API
